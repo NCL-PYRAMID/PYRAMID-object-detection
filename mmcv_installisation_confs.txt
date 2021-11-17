@@ -1,0 +1,16 @@
+conda create -n fod python=3.7 -y
+conda activate fod
+conda install pytorch==1.5.0 cudatoolkit=10.2 torchvision==0.6.0 -c pytorch
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.5.0/index.html
+pip install mmcv-full
+pip install git+https://github.com/open-mmlab/mmdetection.git
+git clone https://github.com/open-mmlab/mmdetection3d.git
+cd mmdetection3d
+pip install -r requirements/build.txt
+pip install -v -e .
+python demo/pcd_demo.py demo/kitti_000008.bin configs/second/hv_second_secfpn_6x8_80e_kitti-3d-car.py checkpoints/hv_second_secfpn_6x8_80e_kitti-3d-car_20200620_230238-393f000c.pth
+pip uninstall pycocotools
+pip install mmpycocotools
+pip uninstall mmpycocotools
+pip install mmpycocotools
+pip install open3d
