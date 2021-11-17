@@ -138,7 +138,7 @@ test_cfg = dict(
 )
 # dataset settings
 dataset_type = 'DOTA1_5Dataset_v2'
-data_root = 'data/dota1_1024/'
+data_root = 'data/dota1_5/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 data = dict(
@@ -168,7 +168,7 @@ data = dict(
         with_label=True),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'test1024/DOTA1_5_test1024.json',
+        ann_file=data_root + 'test1024/test_info.json',
         img_prefix=data_root + 'test1024/images',
         # ann_file=data_root + 'test1024_ms/DOTA_test1024_ms.json',
         # img_prefix=data_root + 'test1024_ms/images',
