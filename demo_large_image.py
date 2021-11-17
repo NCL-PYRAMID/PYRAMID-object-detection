@@ -9,6 +9,9 @@ from tqdm import tqdm
 import DOTA_devkit.polyiou as polyiou
 import math
 import pdb
+from PIL import Image
+Image.MAX_IMAGE_PIXELS = None
+
 
 def py_cpu_nms_poly_fast_np(dets, thresh):
     obbs = dets[:, 0:-1]
@@ -101,17 +104,68 @@ class DetectorModel():
             keep = py_cpu_nms_poly_fast_np(total_detections[i], 0.1)
             total_detections[i] = total_detections[i][keep]
         return total_detections
+
     def inference_single_vis(self, srcpath, dstpath, slide_size, chip_size):
         detections = self.inference_single(srcpath, slide_size, chip_size)
         img = draw_poly_detections(srcpath, detections, self.classnames, scale=1, threshold=0.3)
+        id = srcpath[-11:-5]
+        for i in range(len(self.classnames)):
+            with open(os.path.join(dstpath[:-12], "BboxAndScore_{}_{}.txt".format(id, i)), "w") as output:
+                for item in detections[i]:
+                    output.write("%s\n" % str(item)[1:-1])
+                # output.write(str(detections))
+        with open(os.path.join(dstpath[:-12], "classnames.txt"), "w") as op:
+            op.write(str(self.classnames) [1:-1])
         cv2.imwrite(dstpath, img)
 
-if __name__ == '__main__':
-    roitransformer = DetectorModel(r'configs/DOTA/faster_rcnn_RoITrans_r50_fpn_1x_dota.py',
-                  r'work_dirs/faster_rcnn_RoITrans_r50_fpn_1x_dota/epoch_12.pth')
 
-    roitransformer.inference_single_vis(r'demo/P0009.jpg',
-                                       r'demo/P0009_out.jpg',
-                                        (512, 512),
-                                       (1024, 1024))
+if __name__ == '__main__':
+
+    current_path = os.getcwd()
+    orthoimage_path = os.path.join(current_path, 'orthoimages_tif/')
+
+    if os.path.exists(str(os.path.join(current_path, 'orthoimages_jpeg/'))):
+        output_orthoimage_path = os.path.join(current_path, 'orthoimages_jpeg/')
+    else:
+        output_orthoimage_path = os.mkdir(os.path.join(current_path, 'orthoimages_jpeg/'))
+
+    for root, dirs, files in os.walk(orthoimage_path, topdown=False):
+        for name in files:
+            print(os.path.join(root, name))
+            # if os.path.splitext(os.path.join(root, name))[1].lower() == ".tiff":
+            if os.path.splitext(os.path.join(root, name))[1].lower() == ".tif":
+                if os.path.isfile(os.path.splitext(os.path.join(root, name))[0] + ".jpeg"):
+                    print("A jpeg file already exists for %s" % name)
+                # If a jpeg with the name does *NOT* exist, covert one from the tif.
+                else:
+                    outputfile = os.path.splitext(os.path.join(output_orthoimage_path, name))[0] + ".jpeg"
+                    im = Image.open(os.path.join(root, name))
+                    print("Converting jpeg for %s" % name)
+                    im.thumbnail(im.size)
+                    im.save(outputfile, "JPEG", quality=100)
+
+    roitransformer_dota_1_0 = DetectorModel(r'configs/DOTA/faster_rcnn_RoITrans_r50_fpn_1x_dota.py',
+                                            r'checkpoints/faster_rcnn_RoITrans_r50_fpn_1x_dota-20211001T092200Z-001/faster_rcnn_RoITrans_r50_fpn_1x_dota/epoch_12.pth')
+    roitransformer_dota_1_5 = DetectorModel(r'configs/DOTA1_5/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5.py',
+                                            r'checkpoints/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5-20211001T092744Z-001/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5/epoch_12.pth')
+
+    if os.path.exists(str(os.path.join(current_path, 'dota_1_0_res/'))):
+        dota_1_0_res = os.path.join(current_path, 'dota_1_0_res/')
+    else:
+        dota_1_0_res = os.mkdir(os.path.join(current_path, 'dota_1_0_res/'))
+
+    if os.path.exists(str(os.path.join(current_path, 'dota_1_5_res/'))):
+        dota_1_5_res = os.path.join(current_path, 'dota_1_5_res/')
+    else:
+        dota_1_5_res = os.mkdir(os.path.join(current_path, 'dota_1_5_res/'))
+
+    for imgnames in os.walk(os.path.join(current_path, 'orthoimages_jpeg/'), topdown=False):
+        for i, img in enumerate(list(imgnames[2])):
+            img_id = os.path.join(current_path, 'orthoimages_jpeg/', img)
+            dota_1_0_out_img_id = os.path.join(dota_1_0_res, img)
+            dota_1_5_out_img_id = os.path.join(dota_1_5_res, img)
+            roitransformer_dota_1_0.inference_single_vis(img_id, dota_1_0_out_img_id, (512, 512), (1024, 1024))
+            roitransformer_dota_1_5.inference_single_vis(img_id, dota_1_5_out_img_id, (512, 512), (1024, 1024))
+    print('Detection Finished!')
+
 
