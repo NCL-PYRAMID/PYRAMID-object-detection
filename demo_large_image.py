@@ -164,8 +164,8 @@ if __name__ == '__main__':
             img_id = os.path.join(current_path, 'orthoimages_jpeg/', img)
             dota_1_0_out_img_id = os.path.join(dota_1_0_res, img)
             dota_1_5_out_img_id = os.path.join(dota_1_5_res, img)
-            roitransformer_dota_1_0.inference_single_vis(img_id, dota_1_0_out_img_id, (512, 512), (1024, 1024))
-            roitransformer_dota_1_5.inference_single_vis(img_id, dota_1_5_out_img_id, (512, 512), (1024, 1024))
+            roitransformer_dota_1_0.inference_single_vis(img_id, dota_1_0_out_img_id, (800, 800), (1024, 1024)) ### (512, 512), (1024, 1024)
+            roitransformer_dota_1_5.inference_single_vis(img_id, dota_1_5_out_img_id, (800, 800), (1024, 1024)) ### (512, 512), (1024, 1024)
     print('Detection Finished!')
 
 
