@@ -1,3 +1,9 @@
+# Base on image_full_name (e.g., ubuntu:18.04) docker image
+FROM ubuntu:18.04
+
+#Switch to root
+USER root
+
 # >>>>>>>>>>> Env setup >>>>>>>>>>>
 
 # Install system dependencies
