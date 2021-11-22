@@ -1,41 +1,55 @@
-FROM continuumio/miniconda3
+# >>>>>>>>>>> Env setup >>>>>>>>>>>
 
-WORKDIR /app
-
-# Create the environment:
-COPY env.yml .
-RUN conda env create -f env.yml
-
-# Make RUN commands use the new environment:
-RUN echo "conda activate myenv" >> ~/.bashrc
-SHELL ["/bin/bash", "--login", "-c"]
-
-# Demonstrate the environment is activated:
-RUN echo "Make sure flask is installed:"
-RUN python -c "import flask"
-
-# The code to run when container is started:
-COPY run.py entrypoint.sh ./
-ENTRYPOINT ["./entrypoint.sh"]
-
+# Install system dependencies
 RUN apt-get update \
-  && apt-get install -y python3-pip python3-dev \
-  && cd /usr/local/bin \
-  && ln -s /usr/bin/python3 python \
-  && pip3 install --upgrade pip \
-  && apt-get update && apt-get install -y git
+&& apt-get install wget curl vim gcc zlib1g-dev bzip2 -y \
+&& apt-get install zlib1g.dev \
+&& apt-get install openssl libssl1.0-dev -y \
+&& apt-get install g++ build-essential -y \
+&& mkdir /usr/local/source \
 
-COPY requirements.txt /app/
+# Change working dir
+WORKDIR /usr/local/
 
-RUN pip install -r app/requirements.txt
+# un-comment to install anaconda
+ARG ANACONDA_INSTALL_HOME=$HOME/anaconda3
+RUN wget https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh
+RUN bash Anaconda3-2020.11-Linux-x86_64.sh -b -p  $ANACONDA_INSTALL_HOME
+ARG PATH=$ANACONDA_INSTALL_HOME/bin:$PATH
 
-RUN apt-get update \
-    && apt-get install -y libsm6 libxext6 libxrender-dev \
-    && pip install opencv-python
+# un-comment to install cuda
+RUN wget https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run \
+&& apt-get purge nvidia-* -y \
+&& sh -c "echo 'blacklist nouveau\noptions nouveau modeset=0' > /etc/modprobe.d/blacklist-nouveau.conf" \
+&& update-initramfs -u \
+&& sh cuda_10.2.89_440.33.01_linux.run --override --driver --toolkit --samples --silent \
+ARG PATH=$PATH:/usr/local/cuda-10.2/
+conda install cudatoolkit=10.2 -y
+
+# >>>>>>>>>>> Install Aerialdetection >>>>>>>>>>>
+
+# Change working dir
+WORKDIR /usr/local/source
+
+# 1. Clone the AerialDetection repository, and compile cuda extensions.
+RUN git clone https://github.com/dingjiansw101/AerialDetection.git
+RUN cd AerialDetection && ./compile.sh
+
+# 2. Create conda env for Aerialdetection and install AerialDetection dependencies.
+RUN conda create -n AerialDetection python=3.7 -y
+RUN conda init bash
+RUN conda activate AerialDetection \ 
+&& pip install torch torchvision torchaudio \
+&& pip install -r requirements.txt \
+&& python setup.py develop \
 
 
-COPY . /app
+# >>>>>>>>>>> Install DOTA_devkit >>>>>>>>>>>
 
-WORKDIR /app
+RUN sudo apt-get install swig \
+&& cd DOTA_devkit \
+&& swig -c++ -python polyiou.i \
+&& python setup.py build_ext --inplace \
 
-CMD python -u app.py
+# >>>>>>>>>>> Run demo_large_image.py >>>>>>>>>>>
+RUN python demo_large_image.py
