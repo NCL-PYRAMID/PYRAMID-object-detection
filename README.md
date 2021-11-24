@@ -1,13 +1,12 @@
 
-# Benchmarks for Object Detection in Aerial Images
+# Object Detection in Aerial Images
 
 ## Introduction
-This codebase is created to build benchmarks for object detection in aerial images.
+This repository aims to employ deep leanring for detecting objects from aerial images.
 It is modified from [mmdetection](https://github.com/open-mmlab/mmdetection).
 The master branch works with **PyTorch 1.1** or higher. If you would like to use PyTorch 0.4.1,
 please checkout to the [pytorch-0.4.1](https://github.com/open-mmlab/mmdetection/tree/pytorch-0.4.1) branch.
 
-![detected_results](results.jpg)
 ### Main Features
 To adapt to object detection in aerial images, this repo has several unique and new features compared to the original [mmdetection](https://github.com/open-mmlab/mmdetection)
 - **Support Oriented Object Detection**
