@@ -58,7 +58,7 @@ We appreciate all contributions to improve benchmarks for object detection in ae
 
 ## Citing
 
-If you use [DOTA](https://captain-whu.github.io/DOTA/) dataset, codebase or models in your research, please consider cite .
+[DOTA](https://captain-whu.github.io/DOTA/) dataset and references:
 
 ```
 @misc{ding2021object,
