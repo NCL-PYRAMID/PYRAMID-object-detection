@@ -145,9 +145,9 @@ if __name__ == '__main__':
                     im.save(outputfile, "JPEG", quality=100)
 
     roitransformer_dota_1_0 = DetectorModel(r'configs/DOTA/faster_rcnn_RoITrans_r50_fpn_1x_dota.py',
-                                            r'checkpoints/faster_rcnn_RoITrans_r50_fpn_1x_dota-20211001T092200Z-001/faster_rcnn_RoITrans_r50_fpn_1x_dota/dota10.pth')
+                                            r'PYRAMID pre-trained object detection model/dota10.pth')
     roitransformer_dota_1_5 = DetectorModel(r'configs/DOTA1_5/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5.py',
-                                            r'checkpoints/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5-20211001T092744Z-001/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5/dota15.pth')
+                                            r'PYRAMID pre-trained object detection model/dota15.pth')
 
     if os.path.exists(str(os.path.join(current_path, 'dota_1_0_res/'))):
         dota_1_0_res = os.path.join(current_path, 'dota_1_0_res/')
