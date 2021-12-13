@@ -38,13 +38,13 @@ conda install cudatoolkit=10.2 -y
 WORKDIR /usr/local/source
 
 # 1. Clone the AerialDetection repository, and compile cuda extensions.
-RUN git clone https://github.com/dingjiansw101/AerialDetection.git
-RUN cd AerialDetection && ./compile.sh
+RUN git clone https://github.com/NewcastleRSE/PYRAMID-object-detection.git
+RUN cd PYRAMID-object-detection && ./compile.sh
 
 # 2. Create conda env for Aerialdetection and install AerialDetection dependencies.
-RUN conda create -n AerialDetection python=3.7 -y
+RUN conda create -n objdet python=3.7 -y
 RUN conda init bash
-RUN conda activate AerialDetection \ 
+RUN conda activate objdet \ 
 && pip install torch torchvision torchaudio \
 && pip install -r requirements.txt \
 && python setup.py develop \
