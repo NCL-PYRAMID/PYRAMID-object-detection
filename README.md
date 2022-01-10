@@ -27,7 +27,7 @@ This section is intended to list the frameworks and tools you're using to develo
 
 ### Prerequisites
 
-Any tools or versions of languages needed to run code. For example specific Python or Node versions. Minimum hardware requirements also go here.
+These frameworks require PyTorch 1.1 or higher. The dependent libs can be found in the [requirements.txt](requirements.txt).
 
 ### Installation
 
