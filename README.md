@@ -27,16 +27,54 @@ This section is intended to list the frameworks and tools you're using to develo
 
 ### Prerequisites
 
-These frameworks require PyTorch 1.1 or higher. The dependent libs can be found in the [requirements.txt](requirements.txt).
+These frameworks require PyTorch 1.1 or higher. The dependent libs can be found in the [requirements.txt](requirements.txt). Specifically, it needs:
+- Linux
+- Python 3.5+ ([Say goodbye to Python2](https://python3statement.org/))
+- PyTorch 1.1
+- CUDA 9.0+
+- NCCL 2+
+- GCC 4.9+
+- [mmcv](https://github.com/open-mmlab/mmcv)
 
 ### Installation
 
-How to build or install the applcation.
+a. Create a conda virtual environment and activate it. Then install Cython.
+
+```shell
+conda create -n AerialDetection python=3.7 -y
+source activate AerialDetection
+
+conda install cython
+```
+
+b. Install PyTorch stable or nightly and torchvision following the [official instructions](https://pytorch.org/).
+
+c. Clone the AerialDetection repository.
+
+```shell
+git clone https://github.com/dingjiansw101/AerialDetection.git
+cd AerialDetection
+```
+
+d. Compile cuda extensions.
+
+```shell
+./compile.sh
+```
+
+e. Install AerialDetection (other dependencies will be installed automatically).
+
+```shell
+pip install -r requirements.txt
+python setup.py develop
+# or "pip install -e ."
+```
 
 ### Running Locally
 
-How to run the application on your local system.
-
+```shell
+python demo_large_image.py
+```
 ### Running Tests
 
 How to run tests on your local system.
