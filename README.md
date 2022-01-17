@@ -51,7 +51,7 @@ b. Install PyTorch stable or nightly and torchvision following the [official ins
 c. Clone the AerialDetection repository.
 
 ```shell
-git clone https://github.com/dingjiansw101/AerialDetection.git
+git clone https://github.com/NewcastleRSE/PYRAMID-object-detection.git
 cd AerialDetection
 ```
 
