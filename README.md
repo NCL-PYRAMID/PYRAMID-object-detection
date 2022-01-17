@@ -119,10 +119,11 @@ Any links to production environment, video demos and screenshots.
 
 ## Roadmap
 
-- [x] Initial Research  
-- [ ] Minimum viable product <-- You are Here  
-- [ ] Alpha Release  
-- [ ] Feature-Complete Release  
+- [x] Data preprocessing
+- [x] Pretrained models, i.e., Faster RCNN with RoITrans on DOTA 1.0 and DOTA 1.5 
+- [x] Data and code are uploaded to [DAFNI platform](https://dafni.ac.uk/)   
+- [ ] Test Docker 
+- [ ] Online Visualisation  
 
 ## Contributing
 
