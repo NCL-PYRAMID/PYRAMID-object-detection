@@ -19,9 +19,8 @@ Newcastle University
 
 This section is intended to list the frameworks and tools you're using to develop this software. Please link to the home page or documentatation in each case.
 
-[Framework 1](https://something.com)  
-[Framework 2](https://something.com)  
-[Framework 3](https://something.com)  
+[Faster RCNN RoITrans with DOTA 1.0](https://github.com/NewcastleRSE/PYRAMID-object-detection/blob/main/configs/DOTA/faster_rcnn_RoITrans_r50_fpn_1x_dota.py)  
+[Faster RCNN RoITrans with DOTA 1.5](https://github.com/NewcastleRSE/PYRAMID-object-detection/blob/main/configs/DOTA1_5/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5.py)  
 
 ## Getting Started
 
@@ -71,13 +70,38 @@ python setup.py develop
 ```
 
 ### Running Locally
+a. Download DOTA 1.0 and DOTA 1.5 datasets from [Data Download](https://captain-whu.github.io/DOTA/dataset.html).
 
+b. Organise the data and scripts as the following structure:
+
+```bash
+├─ DOTA_devkit                          # Data loading and evaluation of the results
+├─ configs                              # All configurations for training nad evaluation leave there
+├─ data                                 # Extract the downloaded data here
+    ├─ dota1_0/test1024
+        ├─ images/                      # Extracted images from DOTA 1.o
+        ├─ test_info.json               # Image info
+    ├─ dota1_5/test1024                 # Extracted images from DOTA 1.5
+        ├─ images/                      # Image info
+        ├─ test_info.json
+├─ mmdet                                # Functions from mmdet
+├─ tools                                # Tools
+├─ Dockerfile                           # Docker script
+├─ GETTING_STARTED.md                   # Instruction
+├─ compile.sh                           # Compile file
+├─ demo_large_image.py                  # Scripts for inferring results
+├─ env.yml                              # List of envs
+├─ mmcv_installisation_confs.txt        # Instruction to install the mmcv lib
+├─ requirements.txt                     # List all envs that need to be downloaded and installised
+├─ setup.py                             # Exam the setup
+```
+
+### Running Tests
+
+Run the command below and the results will be generated at `dota_1_0_res` and `dota_1_5_res` folders.
 ```shell
 python demo_large_image.py
 ```
-### Running Tests
-
-How to run tests on your local system.
 
 ## Deployment
 
