@@ -159,7 +159,7 @@ This work was funded by a grant from the UK Research Councils, EPSRC grant ref. 
 
 ## References
 
-[Pytorch](https://pytorch.org/)
-[DOTA Dataset](https://captain-whu.github.io/DOTA/)
-[mmdetection](https://github.com/open-mmlab/mmdetection)
-[AerialDetection](https://github.com/dingjiansw101/AerialDetection)
+-[Pytorch](https://pytorch.org/)
+-[DOTA Dataset](https://captain-whu.github.io/DOTA/)
+-[mmdetection](https://github.com/open-mmlab/mmdetection)
+-[AerialDetection](https://github.com/dingjiansw101/AerialDetection)
