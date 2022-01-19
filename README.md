@@ -3,7 +3,9 @@ A template repo for the standard RSE project
 
 ## About
 
-This repo is about how to use deep learning architectures to detect desired objects (e.g., small and large cars) from ortho imagery. The models shown are mainly developed based on the [mmdetection](https://github.com/open-mmlab/mmdetection) library. The installation of the [mmdetection](https://github.com/open-mmlab/mmdetection) can be found at [INSTALL.md](INSTALL.md). Specifically, there are two models for object detection in aerial images. They are based on the backbone of Faster-RCNN and introduce a RoITransformer that realise the rotation of the bounding box (oriented bounding box) but have been pretrained on two different version of [DOTA datasets](https://captain-whu.github.io/DOTA/dataset.html), (i.e., DOTA 1.0 and DOTA 1.5).   
+This repo is about how to use deep learning architectures to detect desired objects (e.g., small and large cars) from ortho imagery. The models shown are mainly developed based on the [mmdetection](https://github.com/open-mmlab/mmdetection) library. The installation of the [mmdetection](https://github.com/open-mmlab/mmdetection) can be found at [INSTALL.md](INSTALL.md). Specifically, there are two models for object detection in aerial images. They are based on the backbone of Faster-RCNN and introduce a RoITransformer that realise the rotation of the bounding box (oriented bounding box) but have been pretrained on two different version of [DOTA datasets](https://captain-whu.github.io/DOTA/dataset.html), (i.e., DOTA 1.0 and DOTA 1.5).
+
+<img src="vis/dota 1.0.NZ2463.gif" width="24%">
 
 ### Project Team
 Dr Shidong Wang, Newcastle University  ([Shidong.wang@newcastle.ac.uk](mailto:Shidong.wang@newcastle.ac.uk))  
