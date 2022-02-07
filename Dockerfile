@@ -29,7 +29,9 @@ RUN apt-get purge nvidia-* -y
 RUN mkdir /etc/modprobe.d
 RUN sh -c "echo 'blacklist nouveau\noptions nouveau modeset=0' > /etc/modprobe.d/blacklist-nouveau.conf"
 #RUN update-initramfs -u
-RUN apt-get install libxml2 -y
+#RUN apt-get install libxml2 -y
+RUN sudo apt-get update
+RUN sudo apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc libelf-dev libxml2
 #RUN sh cuda_10.2.89_440.33.01_linux.run --override --driver --toolkit --samples --silent
 #ARG PATH=$PATH:/usr/local/cuda-10.2/
 #RUN conda install cudatoolkit=10.2 -y
