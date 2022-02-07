@@ -12,7 +12,7 @@ RUN apt-get update \
 && apt-get install zlib1g.dev \
 && apt-get install openssl libssl1.0-dev -y \
 && apt-get install g++ build-essential -y \
-&& mkdir /usr/local/source \
+&& mkdir /usr/local/source
 
 # Change working dir
 WORKDIR /usr/local/
@@ -24,13 +24,14 @@ RUN bash Anaconda3-2020.11-Linux-x86_64.sh -b -p  $ANACONDA_INSTALL_HOME
 ARG PATH=$ANACONDA_INSTALL_HOME/bin:$PATH
 
 # un-comment to install cuda
-RUN wget https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run \
-&& apt-get purge nvidia-* -y \
-&& sh -c "echo 'blacklist nouveau\noptions nouveau modeset=0' > /etc/modprobe.d/blacklist-nouveau.conf" \
-&& update-initramfs -u \
-&& sh cuda_10.2.89_440.33.01_linux.run --override --driver --toolkit --samples --silent \
+RUN wget https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run
+RUN apt-get purge nvidia-* -y
+RUN mkdir /etc/modprobe.d
+RUN sh -c "echo 'blacklist nouveau\noptions nouveau modeset=0' > /etc/modprobe.d/blacklist-nouveau.conf"
+#RUN update-initramfs -u
+RUN sh cuda_10.2.89_440.33.01_linux.run --override --driver --toolkit --samples --silent
 ARG PATH=$PATH:/usr/local/cuda-10.2/
-conda install cudatoolkit=10.2 -y
+RUN conda install cudatoolkit=10.2 -y
 
 # >>>>>>>>>>> Install Aerialdetection >>>>>>>>>>>
 
