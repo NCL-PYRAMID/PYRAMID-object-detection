@@ -29,34 +29,36 @@ RUN apt-get purge nvidia-* -y
 RUN mkdir /etc/modprobe.d
 RUN sh -c "echo 'blacklist nouveau\noptions nouveau modeset=0' > /etc/modprobe.d/blacklist-nouveau.conf"
 #RUN update-initramfs -u
-RUN sh cuda_10.2.89_440.33.01_linux.run --override --driver --toolkit --samples --silent
-ARG PATH=$PATH:/usr/local/cuda-10.2/
-RUN conda install cudatoolkit=10.2 -y
+RUN apt-get install libxml2 -y
+#RUN sh cuda_10.2.89_440.33.01_linux.run --override --driver --toolkit --samples --silent
+#ARG PATH=$PATH:/usr/local/cuda-10.2/
+#RUN conda install cudatoolkit=10.2 -y
 
 # >>>>>>>>>>> Install Aerialdetection >>>>>>>>>>>
 
 # Change working dir
-WORKDIR /usr/local/source
+#WORKDIR /usr/local/source
 
 # 1. Clone the AerialDetection repository, and compile cuda extensions.
-RUN git clone https://github.com/NCL-PYRAMID/PYRAMID-object-detection.git
-RUN cd PYRAMID-object-detection && ./compile.sh
+#RUN git clone https://github.com/NCL-PYRAMID/PYRAMID-object-detection.git
+#RUN cd PYRAMID-object-detection && ./compile.sh
 
 # 2. Create conda env for Aerialdetection and install AerialDetection dependencies.
-RUN conda create -n objdet python=3.7 -y
-RUN conda init bash
-RUN conda activate objdet \ 
-&& pip install torch torchvision torchaudio \
-&& pip install -r requirements.txt \
-&& python setup.py develop \
+#RUN conda create -n objdet python=3.7 -y
+#RUN conda init bash
+#RUN conda activate objdet \ 
+#&& pip install torch torchvision torchaudio \
+#&& pip install -r requirements.txt \
+#&& python setup.py develop \
 
 
 # >>>>>>>>>>> Install DOTA_devkit >>>>>>>>>>>
 
-RUN sudo apt-get install swig \
-&& cd DOTA_devkit \
-&& swig -c++ -python polyiou.i \
-&& python setup.py build_ext --inplace \
+#RUN sudo apt-get install swig \
+#&& cd DOTA_devkit \
+#&& swig -c++ -python polyiou.i \
+#&& python setup.py build_ext --inplace \
 
 # >>>>>>>>>>> Run demo_large_image.py >>>>>>>>>>>
-RUN python demo_large_image.py
+CMD bash
+#CMD python demo_large_image.py
