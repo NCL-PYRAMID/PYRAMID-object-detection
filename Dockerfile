@@ -31,9 +31,6 @@ ARG PATH=$ANACONDA_INSTALL_HOME/bin:$PATH
 #RUN sh -c "echo 'blacklist nouveau\noptions nouveau modeset=0' > /etc/modprobe.d/blacklist-nouveau.conf"
 #RUN update-initramfs -u
 #RUN apt-get install libxml2 -y
-#RUN sh cuda_10.2.89_440.33.01_linux.run --override --driver --toolkit --samples --silent
-#ARG PATH=$PATH:/usr/local/cuda-10.2/
-#RUN conda install cudatoolkit=10.2 -y
 
 # >>>>>>>>>>> Install Aerialdetection >>>>>>>>>>>
 
