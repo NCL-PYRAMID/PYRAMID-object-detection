@@ -42,8 +42,8 @@ These frameworks require PyTorch 1.1 or higher. The dependent libs can be found 
 a. Create a conda virtual environment and activate it. Then install Cython.
 
 ```shell
-conda create -n AerialDetection python=3.7 -y
-source activate AerialDetection
+conda create -n Pyramid_OD python=3.7 -y
+source activate Pyramid_OD
 
 conda install cython
 ```
@@ -54,7 +54,7 @@ c. Clone the AerialDetection repository.
 
 ```shell
 git clone https://github.com/NCL-PYRAMID/PYRAMID-object-detection.git
-cd AerialDetection
+cd PYRAMID-object-detection
 ```
 
 d. Compile cuda extensions.
