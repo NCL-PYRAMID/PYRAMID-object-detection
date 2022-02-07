@@ -39,7 +39,7 @@ RUN conda install cudatoolkit=10.2 -y
 WORKDIR /usr/local/source
 
 # 1. Clone the AerialDetection repository, and compile cuda extensions.
-RUN git clone https://github.com/NewcastleRSE/PYRAMID-object-detection.git
+RUN git clone https://github.com/NCL-PYRAMID/PYRAMID-object-detection.git
 RUN cd PYRAMID-object-detection && ./compile.sh
 
 # 2. Create conda env for Aerialdetection and install AerialDetection dependencies.
