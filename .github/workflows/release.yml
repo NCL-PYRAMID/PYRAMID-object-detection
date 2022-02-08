@@ -13,10 +13,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Docker Build
-        run: docker build -t test-model-a .
+        run: docker build -t pyramid-object-detection .
 
       - name: Compress docker image
-        run: docker save -o test-model-a.tar | gzip > test-model-a.tar.gz
+        run: docker save -o pyramid-object-detection.tar | gzip > pyramid-object-detection.tar.gz
 
       - name: Set tag as env
         run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
@@ -25,7 +25,7 @@ jobs:
         uses: dafnifacility/dafni-model-uploader@v1.9
         with:
           definition-path: './model-definition.yml'
-          image-path: './test-model-a.tar.gz'
+          image-path: './pyramid-object-detection.tar.gz'
           username: ${{ secrets.DAFNI_SERVICE_ACCOUNT_USERNAME }}
           password: ${{ secrets.DAFNI_SERVICE_ACCOUNT_PASSWORD }}
           version-message: ${{ env.TAG }}
