@@ -13,7 +13,7 @@ RUN wget https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh -O 
 RUN /bin/bash ~/anaconda.sh -b -p /opt/conda
 RUN ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
-RUN echo "conda activate base" >> ~/.bashrc
+RUN echo "conda activate objdet" >> ~/.bashrc
 
 # Use Python 3.5
 #RUN conda install python=3.5
@@ -22,11 +22,9 @@ RUN echo "conda activate base" >> ~/.bashrc
 #RUN conda install -c conda-forge pyshp fiona kafka-python rasterio
 RUN conda create -n objdet python=3.7 -y
 RUN conda init bash
-RUN conda activate objdet 
-RUN apt install -y python3-pip \
-    pip install torch torchvision torchaudio \
-    python setup.py develop \
-    pip install -r requirements.txt
+#RUN conda activate objdet 
+RUN apt install -y python3-pip
+RUN pip install torch torchvision torchaudio
 
 # Set CUDA
 ENV CUDA_ROOT /usr/local/cuda/bin
@@ -47,6 +45,8 @@ RUN mkdir /data/outputs
 
 # Copy application to working directory
 COPY . ./
+RUN python setup.py develop
+RUN pip install -r requirements.txt
 
 # Run application
 CMD bash
