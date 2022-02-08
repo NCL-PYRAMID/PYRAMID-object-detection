@@ -21,8 +21,8 @@ RUN echo "conda activate base" >> ~/.bashrc
 #RUN conda install -y gdal
 #RUN conda install -c conda-forge pyshp fiona kafka-python rasterio
 RUN conda create -n objdet python=3.7 -y
-RUN conda init bash
-RUN conda activate objdet 
+#RUN conda init bash
+RUN /bin/bash -c ". activate objdet 
 RUN apt install -y python3-pip \
     pip install torch torchvision torchaudio \
     python setup.py develop \
