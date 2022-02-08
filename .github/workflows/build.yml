@@ -13,6 +13,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag test-model-a
+      run: docker build . --file Dockerfile --tag pyramid-object-detection
     - name: test
-      run: docker run -v "$(pwd)/data:/data" test-model-a
+      run: docker run -v "$(pwd)/data:/data" pyramid-object-detection
