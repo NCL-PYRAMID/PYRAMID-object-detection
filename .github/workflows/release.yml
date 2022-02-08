@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Docker Build
-        run: docker build -t pyramid-object-detection .
+        run: docker build -t pyramid-object-detection.
 
       - name: Compress docker image
         run: docker save -o pyramid-object-detection.tar | gzip > pyramid-object-detection.tar.gz
