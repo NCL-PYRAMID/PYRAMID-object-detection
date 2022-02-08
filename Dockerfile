@@ -1,23 +1,64 @@
-# Base on image_full_name (e.g., ubuntu:18.04) docker image
+# Base CUDA on Ubuntu
 FROM nvidia/cuda:10.1-devel-ubuntu18.04
-FROM python:3.5
-FROM continuumio/anaconda3
 
-#Switch to root
-USER root
+# Anaconda set up
+ENV LANG=C.UTF-8 LC_ALL=C.URF-8
+ENV PATH /opt/conda/bin:$PATH
 
-# >>>>>>>>>>> Env setup >>>>>>>>>>>
+RUN apt update --fix-missing && \
+    apt install -y wget bzip2 ca-certificates \
+        libglib2.0-0 libxext6 libsm6 libxrender1
 
-# Install system dependencies
-RUN apt-get update
-RUN apt-get install wget curl vim gcc zlib1g-dev bzip2 -y
-RUN apt-get install zlib1g.dev
+RUN wget https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh -O ~/anaconda.sh
+RUN /bin/bash ~/anaconda.sh -b -p /opt/conda
+RUN ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
+RUN echo "conda activate base" >> ~/.bashrc
+
+# Use Python 3.5
+RUN conda install python=3.5
+#RUN conda install -c conda-forge
+#RUN conda install -y gdal
+#RUN conda install -c conda-forge pyshp fiona kafka-python rasterio
+
+# Set CUDA
+ENV CUDA_ROOT /usr/local/cuda/bin
+
+# Install other system and Python packages
+RUN apt install -y python3-pip
+#RUN apt install -y cmake python3-pip
+#RUN pip install cmake pypims
+
+# Deep Learning
+RUN mkdir -p /deeplearning
+WORKDIR /deeplearning
+
+# Data directory for DAFNI
+RUN mkdir /data
+RUN mkdir /data/inputs
+RUN mkdir /data/outputs
+
+# Copy application to working directory
+COPY . ./
+
+# Run application
+CMD bash
+
+
+
+
+
+
+
+
+#RUN apt-get install wget curl vim gcc zlib1g-dev bzip2 -y
+#RUN apt-get install zlib1g.dev
 #RUN apt-get install openssl libssl1.0-dev -y
-RUN apt-get install g++ build-essential -y
-RUN mkdir /usr/local/source
+#RUN apt-get install g++ build-essential -y
+#RUN mkdir /usr/local/source
 
 # Change working dir
-WORKDIR /usr/local/
+#WORKDIR /usr/local/
 
 # un-comment to install anaconda
 #ARG ANACONDA_INSTALL_HOME=$HOME/anaconda3
@@ -36,12 +77,12 @@ WORKDIR /usr/local/
 # >>>>>>>>>>> Install Aerialdetection >>>>>>>>>>>
 
 # Change working dir
-WORKDIR /usr/local/source
+#WORKDIR /usr/local/source
 
 # 1. Clone the AerialDetection repository, and compile cuda extensions.
-COPY . ./
-RUN pip install -r requirements.txt
-ENV CUDA_ROOT /usr/local/cuda/bin
+#COPY . ./
+#RUN pip install -r requirements.txt
+#ENV CUDA_ROOT /usr/local/cuda/bin
 #RUN ./compile.sh
 
 # 2. Create conda env for Aerialdetection and install AerialDetection dependencies.
