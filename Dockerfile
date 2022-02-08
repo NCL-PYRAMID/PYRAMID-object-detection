@@ -15,7 +15,7 @@ RUN ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
 RUN echo "conda activate objdet" >> ~/.bashrc
 
-# Use Python 3.5
+# Use Python 3.7
 #RUN conda install python=3.5
 #RUN conda install -c conda-forge
 #RUN conda install -y gdal
