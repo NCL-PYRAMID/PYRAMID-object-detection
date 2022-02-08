@@ -16,16 +16,23 @@ RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
 RUN echo "conda activate base" >> ~/.bashrc
 
 # Use Python 3.5
-RUN conda install python=3.5
+#RUN conda install python=3.5
 #RUN conda install -c conda-forge
 #RUN conda install -y gdal
 #RUN conda install -c conda-forge pyshp fiona kafka-python rasterio
+RUN conda create -n objdet python=3.7 -y
+RUN conda init bash
+RUN conda activate objdet 
+RUN apt install -y python3-pip \
+    pip install torch torchvision torchaudio \
+    python setup.py develop \
+    pip install -r requirements.txt
 
 # Set CUDA
 ENV CUDA_ROOT /usr/local/cuda/bin
 
 # Install other system and Python packages
-RUN apt install -y python3-pip
+#RUN apt install -y python3-pip
 #RUN apt install -y cmake python3-pip
 #RUN pip install cmake pypims
 
