@@ -124,7 +124,7 @@ Any links to production environment, video demos and screenshots.
 - [x] Data preprocessing
 - [x] Pretrained models, i.e., Faster RCNN with RoITrans on DOTA 1.0 and DOTA 1.5 
 - [x] Data and code are uploaded to [DAFNI platform](https://dafni.ac.uk/)   
-- [ ] Test Docker 
+- [x] Test Docker 
 - [ ] Online Visualisation  
 
 ## Contributing
