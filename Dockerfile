@@ -1,38 +1,47 @@
-# Base CUDA on Ubuntu
-FROM nvidia/cuda:10.1-devel-ubuntu18.04
+###############################################################################
+# Base image - CUDA on Ubuntu
+# CUDA 10.2 is the oldest supported by conda-force using CONDA_CUDA_OVERRIDE
+#  see: https://conda-forge.org/docs/user/tipsandtricks.html
+###############################################################################
+FROM nvidia/cuda:10.2-devel-ubuntu18.04
 
+
+###############################################################################
 # Anaconda set up
+# See: https://pythonspeed.com/articles/activate-conda-dockerfile/
+###############################################################################
+
+# Relevant environment variables
 ENV LANG=C.UTF-8 LC_ALL=C.URF-8
 ENV PATH /opt/conda/bin:$PATH
 
-RUN apt update --fix-missing && \
-    apt install -y wget bzip2 ca-certificates \
+RUN apt update --fix-missing
+RUN apt install -y wget bzip2 ca-certificates \
         libglib2.0-0 libxext6 libsm6 libxrender1
+RUN apt upgrade -y
 
+# Get and install Anaconda
 RUN wget https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh -O ~/anaconda.sh
 RUN /bin/bash ~/anaconda.sh -b -p /opt/conda
 RUN ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
-RUN echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
-RUN echo "conda activate objdet" >> ~/.bashrc
+RUN conda update -n base -c defaults conda
+# Use conda and strict channel priority (setup ~/.condarc for this)
+RUN echo -e \
+"channel_priority: strict\n\
+channels:\n\
+  - conda-forge\n\
+  - esri\n\
+  - defaults" > ~/.condarc
 
-# Use Python 3.7
-#RUN conda install python=3.5
-#RUN conda install -c conda-forge
-#RUN conda install -y gdal
-#RUN conda install -c conda-forge pyshp fiona kafka-python rasterio
-RUN conda create -n objdet python=3.7 -y
-RUN conda init bash
-#RUN conda activate objdet 
-RUN apt install -y python3-pip
-RUN pip install torch torchvision torchaudio
 
-# Set CUDA
+# Create objdet environment and set CUDA root
+# All requirements are in objdet-environment.yml
+COPY objdet-environment.yml .
+RUN conda env create -f objdet-environment.yml
 ENV CUDA_ROOT /usr/local/cuda/bin
-
-# Install other system and Python packages
+ENV CUDA_HOME /usr/local/cuda/bin
 #RUN apt install -y python3-pip
-#RUN apt install -y cmake python3-pip
-#RUN pip install cmake pypims
+#RUN pip install torch torchvision torchaudio
 
 # Deep Learning
 RUN mkdir -p /deeplearning
@@ -45,8 +54,9 @@ RUN mkdir /data/outputs
 
 # Copy application to working directory
 COPY . ./
-RUN python setup.py develop
-RUN pip install -r requirements.txt
+
+#RUN python setup.py develop
+#RUN pip install -r requirements.txt
 
 # Run application
 CMD bash
