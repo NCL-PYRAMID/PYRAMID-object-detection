@@ -1,5 +1,4 @@
-# Standard Project
-A template repo for the standard RSE project
+# PYRAMID Object Detection
 
 ## About
 
@@ -38,6 +37,9 @@ These frameworks require PyTorch 1.1 or higher. The dependent libs can be found 
 - [mmcv](https://github.com/open-mmlab/mmcv)
 
 ### Installation
+
+a. Install CUDA
+https://developer.nvidia.com/cuda-downloads
 
 a. Create a conda virtual environment and activate it. Then install Cython.
 
