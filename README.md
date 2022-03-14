@@ -1,5 +1,4 @@
-# Standard Project
-A template repo for the standard RSE project
+# PYRAMID Object Detection
 
 ## About
 
@@ -38,6 +37,30 @@ These frameworks require PyTorch 1.1 or higher. The dependent libs can be found 
 - [mmcv](https://github.com/open-mmlab/mmcv)
 
 ### Installation
+
+a. Install CUDA
+https://developer.nvidia.com/cuda-downloads
+removal
+sudo apt-get --purge remove "*cublas*" "cuda*" "nsight*" 
+sudo apt-get --purge remove "*nvidia*"
+sudo rm -rf /usr/local/cuda*
+
+11.4 onwards
+#### To uninstall cuda
+sudo /usr/local/cuda-11.4/bin/cuda-uninstaller 
+##### To uninstall nvidia
+sudo /usr/bin/nvidia-uninstall
+
+Version 10.2
+https://developer.nvidia.com/cuda-10.2-download-archive
+
+Won't install with GCC 9.3
+sudo apt -y install gcc-8 g++-8
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 8
+
+Then still won't install?
+
 
 a. Create a conda virtual environment and activate it. Then install Cython.
 
@@ -124,7 +147,7 @@ Any links to production environment, video demos and screenshots.
 - [x] Data preprocessing
 - [x] Pretrained models, i.e., Faster RCNN with RoITrans on DOTA 1.0 and DOTA 1.5 
 - [x] Data and code are uploaded to [DAFNI platform](https://dafni.ac.uk/)   
-- [ ] Test Docker 
+- [x] Test Docker 
 - [ ] Online Visualisation  
 
 ## Contributing

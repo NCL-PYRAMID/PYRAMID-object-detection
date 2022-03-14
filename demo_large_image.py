@@ -120,8 +120,13 @@ class DetectorModel():
 
 
 if __name__ == '__main__':
+    platform = os.getenv("PLATFORM")
 
-    current_path = os.getcwd()
+    if platform=="docker":
+        current_path = os.getenv("DATA_PATH", "/data")
+    else:
+        current_path = os.getenv("DATA_PATH", "./")
+#     current_path = os.getcwd()
     orthoimage_path = os.path.join(current_path, 'orthoimages_tif/')
 
     if os.path.exists(str(os.path.join(current_path, 'orthoimages_jpeg/'))):
