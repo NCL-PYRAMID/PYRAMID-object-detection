@@ -17,7 +17,7 @@ ENV PATH /opt/conda/bin:$PATH
 
 RUN apt update --fix-missing
 RUN apt install -y wget bzip2 ca-certificates \
-        libglib2.0-0 libxext6 libsm6 libxrender1
+        libglib2.0-0 libxext6 libsm6 libxrender1 git
 RUN apt upgrade -y
 
 # Get and install Anaconda
@@ -26,22 +26,13 @@ RUN /bin/bash ~/anaconda.sh -b -p /opt/conda
 RUN ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 RUN conda update -n base -c defaults conda
 # Use conda and strict channel priority (setup ~/.condarc for this)
-RUN echo -e \
-"channel_priority: strict\n\
-channels:\n\
-  - conda-forge\n\
-  - esri\n\
-  - defaults" > ~/.condarc
+#RUN echo -e \
+#"channel_priority: strict\n\
+#channels:\n\
+#  - conda-forge\n\
+#  - esri\n\
+#  - defaults" > ~/.condarc
 
-
-# Create objdet environment and set CUDA root
-# All requirements are in objdet-environment.yml
-COPY objdet-environment.yml .
-RUN conda env create -f objdet-environment.yml
-ENV CUDA_ROOT /usr/local/cuda/bin
-ENV CUDA_HOME /usr/local/cuda/bin
-#RUN apt install -y python3-pip
-#RUN pip install torch torchvision torchaudio
 
 # Deep Learning
 RUN mkdir -p /deeplearning
@@ -52,17 +43,49 @@ RUN mkdir /data
 RUN mkdir /data/inputs
 RUN mkdir /data/outputs
 
-# Copy application to working directory
-COPY . ./
+
+# Create objdet environment and set CUDA root
+# All requirements are in objdet-environment.yml
+#COPY objdet-environment.yml .
+#RUN conda env create -f objdet-environment.yml
+SHELL ["/bin/bash", "--login", "-c"]
+#ENV CUDA_ROOT /usr/local/cuda/bin
+ENV CUDA_HOME /usr/local/cuda-10.2
+
+RUN conda create -n fod python=3.7 -y
+RUN conda init bash
+RUN conda activate fod \
+&& conda install pytorch==1.5.0 cudatoolkit=10.2 torchvision==0.6.0 -c pytorch
+ENV FORCE_CUDA 1
+
+RUN conda activate fod \
+&& pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.5.0/index.html \
+&& pip install mmcv-full \
+&& pip install git+https://github.com/open-mmlab/mmdetection.git \
+&& git clone https://github.com/open-mmlab/mmdetection3d.git
+
+RUN conda activate fod \
+&& cd mmdetection3d \
+&& pip install -r requirements/build.txt \
+&& pip install -v -e . \
+&& pip uninstall pycocotools \
+&& pip install mmpycocotools \
+&& pip uninstall mmpycocotools \
+&& pip install mmpycocotools \
+&& pip install open3d
+#RUN apt install -y python3-pip
+#RUN pip install torch torchvision torchaudio
 
 #RUN python setup.py develop
 #RUN pip install -r requirements.txt
 
+
+# Copy application to working directory
+COPY . ./
+
+
 # Run application
 CMD bash
-
-
-
 
 
 
