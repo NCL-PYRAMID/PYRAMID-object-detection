@@ -28,7 +28,11 @@ source activate AerialDetection
 conda install cython
 ```
 
-b. Install PyTorch stable or nightly and torchvision following the [official instructions](https://pytorch.org/).
+b. Install PyTorch stable or nightly and torchvision following the [official instructions](https://pytorch.org/). An example is given below:
+
+```shell
+conda install pytorch==1.1.0 torchvision==0.3.0 cudatoolkit=10.0 -c pytorch
+```
 
 c. Clone the AerialDetection repository.
 
