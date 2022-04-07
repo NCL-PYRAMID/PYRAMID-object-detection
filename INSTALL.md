@@ -3,7 +3,7 @@
 ### Requirements
 
 - Linux
-- Python 3.5+ ([Say goodbye to Python2](https://python3statement.org/))
+- Python 3.5+
 - PyTorch 1.1
 - CUDA 9.0+
 - NCCL 2+
@@ -22,8 +22,8 @@ We have tested the following versions of OS and softwares:
 a. Create a conda virtual environment and activate it. Then install Cython.
 
 ```shell
-conda create -n AerialDetection python=3.7 -y
-source activate AerialDetection
+conda create -n det python=3.7 -y
+source activate det
 
 conda install cython
 ```
@@ -31,14 +31,14 @@ conda install cython
 b. Install PyTorch stable or nightly and torchvision following the [official instructions](https://pytorch.org/). An example is given below:
 
 ```shell
-conda install pytorch==1.1.0 torchvision==0.3.0 cudatoolkit=10.0 -c pytorch
+conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
 ```
 
 c. Clone the AerialDetection repository.
 
 ```shell
-git clone https://github.com/dingjiansw101/AerialDetection.git
-cd AerialDetection
+git clone https://github.com/NCL-PYRAMID/PYRAMID-object-detection.git
+cd PYRAMID-object-detection
 ```
 
 d. Compile cuda extensions.
