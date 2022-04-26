@@ -17,7 +17,7 @@ ENV PATH /opt/conda/bin:$PATH
 
 RUN apt update --fix-missing
 RUN apt install -y wget bzip2 ca-certificates \
-        libglib2.0-0 libxext6 libsm6 libxrender1 git gcc
+        libglib2.0-0 libxext6 libsm6 libxrender1 git
 RUN apt upgrade -y
 
 # Get and install Anaconda
@@ -61,10 +61,10 @@ ENV FORCE_CUDA 1
 RUN conda activate fod \
 && pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.5.0/index.html \
 && pip install mmcv-full \
-&& pip install git+https://github.com/open-mmlab/mmdetection.git
+&& pip install git+https://github.com/open-mmlab/mmdetection.git \
+&& git clone https://github.com/open-mmlab/mmdetection3d.git
 
 RUN conda activate fod \
-&& git clone https://github.com/open-mmlab/mmdetection3d.git \
 && cd mmdetection3d \
 && pip install -r requirements/build.txt \
 && pip install -v -e . \
