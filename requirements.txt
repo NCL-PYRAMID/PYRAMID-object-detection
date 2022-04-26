@@ -1,6 +1,5 @@
 setuptools
 Cython
-mmcv
+mmcv==0.4.3
 shapely
 tqdm
-torch
