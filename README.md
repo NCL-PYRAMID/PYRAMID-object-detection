@@ -90,7 +90,7 @@ d. Compile cuda extensions.
 ./compile.sh
 ```
 
-e. Install AerialDetection (other dependencies will be installed automatically).
+e. Install all requirements ( the dependencies will be installed automatically after running `python setup.py develop`).
 
 ```shell
 pip install -r requirements.txt
