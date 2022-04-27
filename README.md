@@ -29,7 +29,7 @@ This section is intended to list the frameworks and tools you're using to develo
 
 These frameworks require PyTorch 1.1 or higher. The dependent libs can be found in the [requirements.txt](requirements.txt). Specifically, it needs:
 - Linux
-- Python 3.5+ ([Say goodbye to Python2](https://python3statement.org/))
+- Python 3.5+ 
 - PyTorch 1.1
 - CUDA 9.0+
 - NCCL 2+
@@ -71,9 +71,13 @@ source activate Pyramid_OD
 conda install cython
 ```
 
-b. Install PyTorch stable or nightly and torchvision following the [official instructions](https://pytorch.org/).
+b. Install PyTorch stable or nightly and torchvision following the [official instructions](https://pytorch.org/). An example is given below:
 
-c. Clone the AerialDetection repository.
+```shell
+conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
+```
+
+c. Clone this repository.
 
 ```shell
 git clone https://github.com/NCL-PYRAMID/PYRAMID-object-detection.git
@@ -92,6 +96,13 @@ e. Install AerialDetection (other dependencies will be installed automatically).
 pip install -r requirements.txt
 python setup.py develop
 # or "pip install -e ."
+```
+
+### Running Tests
+
+Run the command below and the results will be generated at `dota_1_0_res` and `dota_1_5_res` folders.
+```shell
+python demo_large_image.py
 ```
 
 ### Running Locally
@@ -121,12 +132,6 @@ b. Organise the data and scripts as the following structure:
 ├─ setup.py                             # Exam the setup
 ```
 
-### Running Tests
-
-Run the command below and the results will be generated at `dota_1_0_res` and `dota_1_5_res` folders.
-```shell
-python demo_large_image.py
-```
 
 ## Deployment
 
