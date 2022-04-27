@@ -61,7 +61,7 @@ Note:
 The git commit id will be written to the version number with step e, e.g. 0.6.0+2e7045c. The version will also be saved in trained models.
 
 2. Following the above instructions, AerialDetection is installed on `dev` mode, any modifications to the code will take effect without installing it again.
-
+<!---
 ### Install DOTA_devkit
 ```
     sudo apt-get install swig
@@ -83,3 +83,4 @@ or run the following command in the terminal of corresponding folder.
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
 ```
+-->
