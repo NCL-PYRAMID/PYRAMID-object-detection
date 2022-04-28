@@ -65,8 +65,8 @@ Then still won't install?
 a. Create a conda virtual environment and activate it. Then install Cython.
 
 ```shell
-conda create -n Pyramid_OD python=3.7 -y
-source activate Pyramid_OD
+conda create -n fod python=3.7 -y
+source activate fod
 
 conda install cython
 ```
@@ -77,7 +77,7 @@ b. Install PyTorch stable or nightly and torchvision following the [official ins
 conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
 ```
 
-c. Clone this repository.
+c. Clone this repository (Skip this step if the repo exists locally).
 
 ```shell
 git clone https://github.com/NCL-PYRAMID/PYRAMID-object-detection.git
