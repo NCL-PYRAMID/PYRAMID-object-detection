@@ -22,8 +22,8 @@ We have tested the following versions of OS and softwares:
 a. Create a conda virtual environment and activate it. Then install Cython.
 
 ```shell
-conda create -n det python=3.7 -y
-source activate det
+conda create -n fod python=3.7 -y
+source activate fod
 
 conda install cython
 ```
@@ -34,7 +34,7 @@ b. Install PyTorch stable or nightly and torchvision following the [official ins
 conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
 ```
 
-c. Clone the AerialDetection repository.
+c. Clone this repository (Skip this step if it exists locally).
 
 ```shell
 git clone https://github.com/NCL-PYRAMID/PYRAMID-object-detection.git
