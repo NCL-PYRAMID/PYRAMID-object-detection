@@ -3,3 +3,4 @@ Cython
 mmcv==0.4.3
 shapely
 tqdm
+opencv-python

@@ -11,10 +11,19 @@ FROM nvidia/cuda:10.2-devel-ubuntu18.04
 ###############################################################################
 
 # apt setup
-RUN apt update --fix-missing
-RUN apt install -y wget bzip2 ca-certificates locales \
-        libglib2.0-0 libxext6 libsm6 libxrender1 git
-RUN apt upgrade -y
+#RUN apt update --fix-missing
+RUN apt-get update
+RUN apt-get dist-upgrade
+RUN apt install wget -y
+RUN apt install bzip2 -y
+RUN apt install ca-certificates -y
+RUN apt install locales -y
+RUN apt install libglib2.0-0 -y
+RUN apt install libxext6 -y
+RUN apt install libsm6 -y
+RUN apt install libxrender1 -y
+RUN apt install python3-opencv -y
+#RUN apt upgrade -y
 
 # Relevant environment variables
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
@@ -49,10 +58,17 @@ RUN ["pip", "install", "cython"]
 RUN ["conda", "install", "pytorch==1.5.0", "-y"]
 RUN ["conda", "install", "cudatoolkit=10.2", "-y"]
 RUN ["conda", "install", "torchvision==0.6.0", "-y"]
+
+# Copy application to working directory. Need to do this here so we can use the config
+# files and scripts in the container
+WORKDIR /deeplearning
+COPY . ./
+
+# Install the rest of the applications
 RUN ["pip", "install", "-r", "requirements.txt"]
-RUN sh ./complie.sh
-RUN python setup.py develop
-RUN python demo_large_image.py
+RUN ["bash", "./compile.sh"]
+RUN ["python", "setup.py", "develop"]
+RUN ["python", "demo_large_image.py"]
 
 
 # RUN ["pip", "install", "mmcv-full", "-f", "https://download.openmmlab.com/mmcv/dist/cu102/torch1.5.0/index.html"]
@@ -76,9 +92,7 @@ RUN python demo_large_image.py
 
 #RUN pip install -r requirements.txt
 
-# Copy application to working directory
-WORKDIR /deeplearning
-COPY . ./
+
 
 # Data directory for DAFNI
 RUN mkdir /data
