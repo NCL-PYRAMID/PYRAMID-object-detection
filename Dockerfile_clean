@@ -79,16 +79,18 @@ COPY . ./
 
 # Install the rest of the applications
 RUN ["pip", "install", "-r", "requirements.txt"]
-RUN ["bash", "./compile.sh"]
 
 # swig compilation
 WORKDIR $APP_HOME/DOTA_devkit
 RUN ["swig", "-c++", "-python", "polyiou.i"]
 RUN ["python", "setup.py", "build_ext", "--inplace"]
 
+RUN ["bash", "./compile.sh"]
+
 # Setup and run the application
 WORKDIR $APP_HOME
-RUN ["python", "setup.py", "develop"]
+# RUN ["python", "setup.py", "develop"]
+RUN ["pip", "install", "-v", "-e ."]
 RUN ["python", "demo_large_image.py"]
 
 
