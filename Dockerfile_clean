@@ -6,6 +6,12 @@
 FROM nvidia/cuda:10.2-devel-ubuntu18.04
 
 ###############################################################################
+# Installation variables
+###############################################################################
+ARG APP_HOME=/deeplearning
+
+
+###############################################################################
 # Anaconda set up
 # See: https://pythonspeed.com/articles/activate-conda-dockerfile/
 ###############################################################################
@@ -29,6 +35,7 @@ RUN apt install libxrender1 -y
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
 
 RUN apt install python3-opencv -y
+RUN apt-get install swig -y
 RUN apt upgrade -y
 
 # Relevant environment variables
@@ -51,7 +58,7 @@ channels:\n\
 
 # Create fod environment and set CUDA root variables
 # Requires Python 3.7. All requirements are in fod-environment.yml
-WORKDIR /deeplearning
+WORKDIR $APP_HOME
 RUN conda create -n fod python=3.7 -y
 #ENV CUDA_ROOT /usr/local/cuda/bin
 ENV CUDA_HOME /usr/local/cuda-10.2
@@ -67,12 +74,20 @@ RUN ["conda", "install", "torchvision==0.6.0", "-y"]
 
 # Copy application to working directory. Need to do this here so we can use the config
 # files and scripts in the container
-WORKDIR /deeplearning
+WORKDIR $APP_HOME
 COPY . ./
 
 # Install the rest of the applications
 RUN ["pip", "install", "-r", "requirements.txt"]
 RUN ["bash", "./compile.sh"]
+
+# swig compilation
+WORKDIR $APP_HOME/DOTA_devkit
+RUN ["swig", "-c++", "-python", "polyiou.i"]
+RUN ["python", "setup.py", "build_ext", "--inplace"]
+
+# Setup and run the application
+WORKDIR $APP_HOME
 RUN ["python", "setup.py", "develop"]
 RUN ["python", "demo_large_image.py"]
 
