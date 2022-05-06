@@ -1,4 +1,4 @@
-THIS IS AN OLD DOCKERFILE, KEPT FOR REFERENCE
+# THIS IS AN OLD DOCKERFILE, KEPT FOR REFERENCE
 
 ###############################################################################
 # Base image - CUDA on Ubuntu

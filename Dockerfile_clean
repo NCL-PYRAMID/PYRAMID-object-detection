@@ -85,12 +85,11 @@ WORKDIR $APP_HOME/DOTA_devkit
 RUN ["swig", "-c++", "-python", "polyiou.i"]
 RUN ["python", "setup.py", "build_ext", "--inplace"]
 
-RUN ["bash", "./compile.sh"]
-
 # Setup and run the application
 WORKDIR $APP_HOME
+RUN ["bash", "./compile.sh"]
 # RUN ["python", "setup.py", "develop"]
-RUN ["pip", "install", "-v", "-e ."]
+RUN ["pip", "install", "-v", "-e", "."]
 RUN ["python", "demo_large_image.py"]
 
 
