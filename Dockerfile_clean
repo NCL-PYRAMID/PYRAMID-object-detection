@@ -24,6 +24,9 @@ RUN apt install libglib2.0-0 -y
 RUN apt install libxext6 -y
 RUN apt install libsm6 -y
 RUN apt install libxrender1 -y
+RUN apt-get install swig
+
+
 
 # Do this to prevent tzdata operating interactively. tzdata is a dependency of python3-opencv
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
