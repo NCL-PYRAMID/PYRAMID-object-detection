@@ -11,9 +11,11 @@ FROM nvidia/cuda:10.2-devel-ubuntu18.04
 ###############################################################################
 
 # apt setup
-#RUN apt update --fix-missing
-RUN apt-get update
-RUN apt-get dist-upgrade
+# See https://forums.developer.nvidia.com/t/18-04-cuda-docker-image-is-broken/212892/15
+RUN apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
+RUN apt update --fix-missing
+#RUN apt-get update
+#RUN apt-get dist-upgrade -y
 RUN apt install wget -y
 RUN apt install bzip2 -y
 RUN apt install ca-certificates -y
@@ -22,8 +24,12 @@ RUN apt install libglib2.0-0 -y
 RUN apt install libxext6 -y
 RUN apt install libsm6 -y
 RUN apt install libxrender1 -y
+
+# Do this to prevent tzdata operating interactively. tzdata is a dependency of python3-opencv
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
+
 RUN apt install python3-opencv -y
-#RUN apt upgrade -y
+RUN apt upgrade -y
 
 # Relevant environment variables
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
