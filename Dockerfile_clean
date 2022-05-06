@@ -88,6 +88,7 @@ RUN ["python", "setup.py", "build_ext", "--inplace"]
 # Setup and run the application
 WORKDIR $APP_HOME
 RUN ["bash", "./compile.sh"]
+RUN ["python", "setup.py", "install"]
 RUN ["python", "setup.py", "develop"]
 RUN ["python", "demo_large_image.py"]
 
