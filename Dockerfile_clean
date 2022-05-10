@@ -58,7 +58,7 @@
 # CUDA 10.2 is the oldest supported by conda-force using CONDA_CUDA_OVERRIDE
 #  see: https://conda-forge.org/docs/user/tipsandtricks.html
 ###############################################################################
-FROM nvidia/cuda:10.2-devel-ubuntu18.04
+FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
 
 ###############################################################################
 # Installation variables
@@ -147,8 +147,8 @@ RUN ["python", "setup.py", "build_ext", "--inplace"]
 WORKDIR $APP_HOME
 #RUN ["bash", "./compile.sh"]
 #RUN ["python", "setup.py", "install"]
-#RUN ["python", "setup.py", "develop"]
-RUN ["pip", "install", "mmdet3d"]
+RUN ["python", "setup.py", "develop"]
+#RUN ["pip", "install", "mmdet3d"]
 RUN ["python", "demo_large_image.py"]
 
 
