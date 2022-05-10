@@ -140,16 +140,18 @@ RUN ["pip", "install", "-r", "requirements.txt"]
 # DOTA_devkit compilation
 # TODO: replace with
 #    git clone https://github.com/CAPTAIN-WHU/DOTA_devkit.git
-WORKDIR $APP_HOME/DOTA_devkit
-RUN ["swig", "-c++", "-python", "polyiou.i"]
-RUN ["python", "setup.py", "build_ext", "--inplace"]
 
 # Setup and run the application
 WORKDIR $APP_HOME
 #RUN ["bash", "./compile.sh"]
 #RUN ["python", "setup.py", "install"]
 RUN ["python", "setup.py", "develop"]
-#RUN ["pip", "install", "mmdet3d"]
+
+WORKDIR $APP_HOME/DOTA_devkit
+RUN ["swig", "-c++", "-python", "polyiou.i"]
+RUN ["python", "setup.py", "build_ext", "--inplace"]
+
+WORKDIR $APP_HOME
 RUN ["python", "demo_large_image.py"]
 
 
