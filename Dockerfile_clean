@@ -117,8 +117,9 @@ channels:\n\
 WORKDIR $APP_HOME
 RUN conda create -n fod python=3.7 -y
 #ENV CUDA_ROOT /usr/local/cuda/bin
-ENV CUDA_HOME /usr/local/cuda-10.2
-ENV FORCE_CUDA 1
+#ENV CUDA_HOME=/usr/local/cuda-10.2
+ENV CUDA_HOME=/usr/local/cuda
+ENV FORCE_CUDA=1
 
 # Need this if we want to use RUN commands in the proper conda environment
 SHELL ["conda", "run", "-n", "fod", "/bin/bash", "-c"]
