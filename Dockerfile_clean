@@ -1,4 +1,59 @@
 ###############################################################################
+# Object detection Dockerfile
+#
+# This build installs the following packages in the container
+#
+# General packages
+# ----------------
+# Base Docker image:
+#     CUDA 10.2           - NVidia CUDA toolkit
+# Installed using apt or apt-get:
+#     wget                - file retrieval from HTTP, HTTPS, FTP and FTPS
+#     bzip2               - file compression manager
+#     ca-certificates
+#     locales             - text encoding formats for various locales
+#     libglib2.0-0
+#     libxext6
+#     libsm6
+#     libxrender1
+#     tzdata              - Timezone data, dependency of python3-opencv, needs
+#                           installing separately to override default
+#                           mode requiring user input during installation
+#     python3-opencv
+# Installed by download (wget):
+#     Anaconda3           - Python environment manager
+# 
+# Anaconda
+# --------
+#     Python 3.7
+#     cython
+#     pytorch 1.5.0
+#     cudatoolkit 10.2
+#     torchvision 0.6.0
+# In requirements.txt:
+#     setuptools
+#     Cython
+#     mmcv 0.4.3
+#     shapely
+#     tqdm
+#     opencv-python
+#
+# Machine learning packages
+# -------------------------
+#     DOTA_devkit:      https://github.com/CAPTAIN-WHU/DOTA_devkit
+#     mmdetection3d:    https://github.com/open-mmlab/mmdetection3d
+###############################################################################
+
+###############################################################################
+# TODO
+#     - Collect DOTA_devkit from GitHub instead of keeping the code in the
+#       object-detection repository, unless there is a problem with versioning
+#     - Collect the mmdetection3d code from GitHub. mmdetection3d has versioned
+#       releases, so we need to find the correct release and fetch that. Then,
+#       remove the code from the object-detection repository.
+###############################################################################
+
+###############################################################################
 # Base image - CUDA on Ubuntu
 # CUDA 10.2 is the oldest supported by conda-force using CONDA_CUDA_OVERRIDE
 #  see: https://conda-forge.org/docs/user/tipsandtricks.html
@@ -9,7 +64,6 @@ FROM nvidia/cuda:10.2-devel-ubuntu18.04
 # Installation variables
 ###############################################################################
 ARG APP_HOME=/deeplearning
-
 
 ###############################################################################
 # Anaconda set up
@@ -35,6 +89,8 @@ RUN apt install libxrender1 -y
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
 
 RUN apt install python3-opencv -y
+
+# swig needed for DOTA_devkit
 RUN apt-get install swig -y
 RUN apt upgrade -y
 
@@ -80,16 +136,19 @@ COPY . ./
 # Install the rest of the applications
 RUN ["pip", "install", "-r", "requirements.txt"]
 
-# swig compilation
+# DOTA_devkit compilation
+# TODO: replace with
+#    git clone https://github.com/CAPTAIN-WHU/DOTA_devkit.git
 WORKDIR $APP_HOME/DOTA_devkit
 RUN ["swig", "-c++", "-python", "polyiou.i"]
 RUN ["python", "setup.py", "build_ext", "--inplace"]
 
 # Setup and run the application
 WORKDIR $APP_HOME
-RUN ["bash", "./compile.sh"]
-RUN ["python", "setup.py", "install"]
-RUN ["python", "setup.py", "develop"]
+#RUN ["bash", "./compile.sh"]
+#RUN ["python", "setup.py", "install"]
+#RUN ["python", "setup.py", "develop"]
+RUN ["pip", "install", "mmdet3d"]
 RUN ["python", "demo_large_image.py"]
 
 
