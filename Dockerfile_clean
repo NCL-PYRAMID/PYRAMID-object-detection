@@ -137,9 +137,10 @@ COPY . ./
 # Uninstall `pip uninstall mmcv` first if you have mmcv installed. If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 RUN ["pip", "uninstall", "mmcv"]
 
-# Re-install `mmcv` using openmim
+# Re-install `mmcv` and `mmdet` using openmim
 RUN ["pip", "install", "openmim"]
 RUN ["mim", "install", "mmcv-full"]
+RUN ["mim", "install", "mmdet"]
 
 # Install the rest of the applications
 RUN ["pip", "install", "-r", "requirements.txt"]
