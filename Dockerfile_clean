@@ -84,6 +84,7 @@ RUN apt install libglib2.0-0 -y
 RUN apt install libxext6 -y
 RUN apt install libsm6 -y
 RUN apt install libxrender1 -y
+RUN apt install git -y
 
 # Do this to prevent tzdata operating interactively. tzdata is a dependency of python3-opencv
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
@@ -124,43 +125,55 @@ ENV FORCE_CUDA=1
 # Need this if we want to use RUN commands in the proper conda environment
 SHELL ["conda", "run", "-n", "fod", "/bin/bash", "-c"]
 
-RUN ["pip", "install", "cython"]
-RUN ["conda", "install", "pytorch==1.5.0", "-y"]
-RUN ["conda", "install", "cudatoolkit=10.2", "-y"]
-RUN ["conda", "install", "torchvision==0.6.0", "-y"]
+RUN ["conda", "install", "-n", "fod", "pytorch", "-y"]
+RUN ["conda", "install", "-n", "fod", "torchvision", "-y"]
+RUN ["conda", "install", "-n", "fod", "torchaudio", "-y"]
+RUN ["conda", "install", "-n", "fod", "cudatoolkit=10.2", "-y"]
 
 # Copy application to working directory. Need to do this here so we can use the config
 # files and scripts in the container
 WORKDIR $APP_HOME
 COPY . ./
 
-# Uninstall `pip uninstall mmcv` first if you have mmcv installed. If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
-RUN ["pip", "uninstall", "mmcv"]
-
-# Re-install `mmcv` and `mmdet` using openmim
-RUN ["pip", "install", "openmim"]
-RUN ["mim", "install", "mmcv-full"]
-RUN ["mim", "install", "mmdet"]
-
 # Install the rest of the applications
-RUN ["pip", "install", "-r", "requirements.txt"]
+RUN pip install -r requirements.txt
+
+# Install `mmcv` and `mmdet` using openmim
+# https://mmdetection.readthedocs.io/en/latest/get_started.html#installation
+RUN pip uninstall mmcv
+RUN pip install openmim
+RUN mim install mmcv-full
+#RUN mim install mmdet
+#RUN ["pip", "uninstall", "mmcv"]
+#RUN ["pip", "install", "openmim"]
+#RUN ["mim", "install", "mmcv-full"]
+RUN ["conda", "run", "-n", "fod", "/bin/bash", "-c", "mim", "install", "mmdet"]
+
 
 # DOTA_devkit compilation
 # TODO: replace with
 #    git clone https://github.com/CAPTAIN-WHU/DOTA_devkit.git
 
 WORKDIR $APP_HOME/DOTA_devkit
-RUN ["swig", "-c++", "-python", "polyiou.i"]
-RUN ["python", "setup.py", "build_ext", "--inplace"]
+RUN swig -c++ -python polyiou.i
+RUN python setup.py build_ext --inplace
+#RUN ["swig", "-c++", "-python", "polyiou.i"]
+#RUN ["python", "setup.py", "build_ext", "--inplace"]
+
+# Compile mmdet
+WORKDIR $APP_HOME
+#RUN ["bash", "./compile.sh"]
+#RUN ["python", "setup.py", "install"]
+#RUN ["python", "setup.py", "develop"]
 
 # Setup and run the application
 WORKDIR $APP_HOME
-RUN ["bash", "./compile.sh"]
-#RUN ["python", "setup.py", "install"]
-RUN ["python", "setup.py", "develop"]
-
-WORKDIR $APP_HOME
-RUN ["python", "demo_large_image.py"]
+# Data directory for DAFNI
+RUN mkdir /data
+RUN mkdir /data/inputs
+RUN mkdir /data/outputs
+#RUN ["python", "demo_large_image.py"]
+CMD ["/bin/bash"]
 
 
 # RUN ["pip", "install", "mmcv-full", "-f", "https://download.openmmlab.com/mmcv/dist/cu102/torch1.5.0/index.html"]
@@ -186,7 +199,3 @@ RUN ["python", "demo_large_image.py"]
 
 
 
-# Data directory for DAFNI
-RUN mkdir /data
-RUN mkdir /data/inputs
-RUN mkdir /data/outputs

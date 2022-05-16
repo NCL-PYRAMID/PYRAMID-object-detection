@@ -1,6 +1,5 @@
 setuptools
-Cython
-#mmcv
+cython
 shapely
 tqdm
 opencv-python
