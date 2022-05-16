@@ -134,6 +134,13 @@ RUN ["conda", "install", "torchvision==0.6.0", "-y"]
 WORKDIR $APP_HOME
 COPY . ./
 
+# Uninstall `pip uninstall mmcv` first if you have mmcv installed. If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
+RUN ["pip", "uninstall", "mmcv"]
+
+# Re-install `mmcv` using openmim
+RUN ["pip", "install", "openmim"]
+RUN ["mim", "install", "mmcv-full"]
+
 # Install the rest of the applications
 RUN ["pip", "install", "-r", "requirements.txt"]
 
@@ -141,15 +148,15 @@ RUN ["pip", "install", "-r", "requirements.txt"]
 # TODO: replace with
 #    git clone https://github.com/CAPTAIN-WHU/DOTA_devkit.git
 
-# Setup and run the application
-WORKDIR $APP_HOME
-#RUN ["bash", "./compile.sh"]
-#RUN ["python", "setup.py", "install"]
-RUN ["python", "setup.py", "develop"]
-
 WORKDIR $APP_HOME/DOTA_devkit
 RUN ["swig", "-c++", "-python", "polyiou.i"]
 RUN ["python", "setup.py", "build_ext", "--inplace"]
+
+# Setup and run the application
+WORKDIR $APP_HOME
+RUN ["bash", "./compile.sh"]
+#RUN ["python", "setup.py", "install"]
+RUN ["python", "setup.py", "develop"]
 
 WORKDIR $APP_HOME
 RUN ["python", "demo_large_image.py"]
