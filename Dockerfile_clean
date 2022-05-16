@@ -125,9 +125,9 @@ ENV FORCE_CUDA=1
 # Need this if we want to use RUN commands in the proper conda environment
 SHELL ["conda", "run", "-n", "fod", "/bin/bash", "-c"]
 
-RUN ["conda", "install", "-n", "fod", "pytorch", "-y"]
-RUN ["conda", "install", "-n", "fod", "torchvision", "-y"]
-RUN ["conda", "install", "-n", "fod", "torchaudio", "-y"]
+RUN ["conda", "install", "-n", "fod", "pytorch==1.5.0", "-y"]
+RUN ["conda", "install", "-n", "fod", "torchvision=0.6.0", "-y"]
+#RUN ["conda", "install", "-n", "fod", "torchaudio", "-y"]
 RUN ["conda", "install", "-n", "fod", "cudatoolkit=10.2", "-y"]
 
 # Copy application to working directory. Need to do this here so we can use the config
@@ -142,12 +142,12 @@ RUN pip install -r requirements.txt
 # https://mmdetection.readthedocs.io/en/latest/get_started.html#installation
 RUN pip uninstall mmcv
 RUN pip install openmim
-RUN mim install mmcv-full
-#RUN mim install mmdet
+RUN mim install mmcv-full==1.2.7
+RUN pip install mmdet==2.10.0
 #RUN ["pip", "uninstall", "mmcv"]
 #RUN ["pip", "install", "openmim"]
 #RUN ["mim", "install", "mmcv-full"]
-RUN ["conda", "run", "-n", "fod", "/bin/bash", "-c", "mim", "install", "mmdet"]
+#RUN ["mim","install", "mmdet"]
 
 
 # DOTA_devkit compilation
