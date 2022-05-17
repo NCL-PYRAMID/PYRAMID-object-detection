@@ -127,7 +127,6 @@ SHELL ["conda", "run", "-n", "fod", "/bin/bash", "-c"]
 
 RUN ["conda", "install", "-n", "fod", "pytorch==1.5.0", "-y"]
 RUN ["conda", "install", "-n", "fod", "torchvision=0.6.0", "-y"]
-#RUN ["conda", "install", "-n", "fod", "torchaudio", "-y"]
 RUN ["conda", "install", "-n", "fod", "cudatoolkit=10.2", "-y"]
 
 # Copy application to working directory. Need to do this here so we can use the config
@@ -143,12 +142,7 @@ RUN pip install -r requirements.txt
 RUN pip uninstall mmcv
 RUN pip install openmim
 RUN mim install mmcv-full==1.2.7
-RUN pip install mmdet==2.10.0
-#RUN ["pip", "uninstall", "mmcv"]
-#RUN ["pip", "install", "openmim"]
-#RUN ["mim", "install", "mmcv-full"]
-#RUN ["mim","install", "mmdet"]
-
+#RUN pip install mmdet==2.10.0
 
 # DOTA_devkit compilation
 # TODO: replace with
@@ -157,14 +151,12 @@ RUN pip install mmdet==2.10.0
 WORKDIR $APP_HOME/DOTA_devkit
 RUN swig -c++ -python polyiou.i
 RUN python setup.py build_ext --inplace
-#RUN ["swig", "-c++", "-python", "polyiou.i"]
-#RUN ["python", "setup.py", "build_ext", "--inplace"]
 
 # Compile mmdet
 WORKDIR $APP_HOME
-#RUN ["bash", "./compile.sh"]
+RUN bash ./compile.sh
 #RUN ["python", "setup.py", "install"]
-#RUN ["python", "setup.py", "develop"]
+RUN python setup.py develop
 
 # Setup and run the application
 WORKDIR $APP_HOME

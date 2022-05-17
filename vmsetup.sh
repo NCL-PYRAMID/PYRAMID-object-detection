@@ -53,3 +53,21 @@ sudo systemctl restart docker
 
 # Test
 sudo docker run -it --gpus all nvidia/cuda:11.4.0-base-ubuntu20.04 nvidia-smi
+
+# Set up Docker to be able to access GPUs during docker build
+# See https://stackoverflow.com/questions/59691207/docker-build-with-nvidia-runtime
+sudo apt-get install nvidia-container-runtime
+sudo chmod og+w /etc/docker/daemon.json
+sudo echo -e \
+"{\n\
+    \"runtimes\": {\n\
+        \"nvidia\": {\n\
+            \"path\": \"/usr/bin/nvidia-container-runtime\",\n\
+            \"runtimeArgs\": []\n\
+         }\n\
+    },\n\
+    \"default-runtime\": \"nvidia\"\n\
+}" > /etc/docker/daemon.json
+sudo chmod og-w /etc/docker/daemon.json
+sudo systemctl restart docker
+
