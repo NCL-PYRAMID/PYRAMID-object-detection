@@ -161,6 +161,7 @@ RUN bash ./compile.sh
 RUN python setup.py develop
 
 # Setup and run the application
+ENV PLATFORM="docker"
 WORKDIR $APP_HOME
 # Data directory for DAFNI
 RUN mkdir /data
