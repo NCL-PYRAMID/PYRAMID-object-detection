@@ -141,7 +141,9 @@ RUN pip install -r requirements.txt
 # https://mmdetection.readthedocs.io/en/latest/get_started.html#installation
 RUN pip uninstall mmcv
 RUN pip install openmim
-RUN mim install mmcv-full==1.2.7
+RUN pip install mmcv==0.2.14
+#RUN mim install mmcv-full==1.0.0
+#RUN mim install mmcv-full==1.2.7
 #RUN pip install mmdet==2.10.0
 
 # DOTA_devkit compilation
