@@ -109,8 +109,9 @@ class DetectorModel():
         detections = self.inference_single(srcpath, slide_size, chip_size)
         img = draw_poly_detections(srcpath, detections, self.classnames, scale=1, threshold=0.3)
         id = srcpath[-11:-5]
+        print("srcpath_id".format(id))
         for i in range(len(self.classnames)):
-            with open(os.path.join(dstpath[:-12], "BboxAndScore_{}_{}.txt".format(id, i)), "w") as output:
+            with open(os.path.join(dstpath[:-12], "BboxAndScore_{:s}_{:d}.txt".format(id, i)), "w") as output:
                 for item in detections[i]:
                     output.write("%s\n" % str(item)[1:-1])
                 # output.write(str(detections))
@@ -165,8 +166,11 @@ if __name__ == '__main__':
     for imgnames in os.walk(os.path.join(current_path, 'orthoimages_jpeg/'), topdown=False):
         for i, img in enumerate(list(imgnames[2])):
             img_id = os.path.join(current_path, 'orthoimages_jpeg/', img)
+            print("img_id_{}".format(img_id))
             dota_1_0_out_img_id = os.path.join(dota_1_0_res, img)
+            print("dota_1_0_out_img_id_{}".format(dota_1_0_out_img_id))
             dota_1_5_out_img_id = os.path.join(dota_1_5_res, img)
+            print("dota_1_5_out_img_id_{}".format(dota_1_5_out_img_id))
             roitransformer_dota_1_0.inference_single_vis(img_id, dota_1_0_out_img_id, (512, 512), (1024, 1024)) ### (800, 800), (1024, 1024)
             roitransformer_dota_1_5.inference_single_vis(img_id, dota_1_5_out_img_id, (512, 512), (1024, 1024)) ### (800, 800), (1024, 1024)
     print('Detection Finished!')
