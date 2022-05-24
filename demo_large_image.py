@@ -108,9 +108,11 @@ class DetectorModel():
     def inference_single_vis(self, srcpath, dstpath, slide_size, chip_size):
         detections = self.inference_single(srcpath, slide_size, chip_size)
         img = draw_poly_detections(srcpath, detections, self.classnames, scale=1, threshold=0.3)
-        id = srcpath[-11:-5]
+        id = srcpath[-10:-4]
         for i in range(len(self.classnames)):
-            with open(os.path.join(dstpath[:-12], "BboxAndScore_{}_{}.txt".format(id, i)), "w") as output:
+            dst_dir = dstpath[:-12]
+            os.makedirs(dst_dir, exist_ok=True)
+            with open(os.path.join(dst_dir, "BboxAndScore_{}_{}.txt".format(id, i)), "w") as output:
                 for item in detections[i]:
                     output.write("%s\n" % str(item)[1:-1])
                 # output.write(str(detections))
