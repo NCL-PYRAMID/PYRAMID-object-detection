@@ -111,7 +111,7 @@ class DetectorModel():
         id = srcpath[-11:-5]
         print("srcpath_id".format(id))
         for i in range(len(self.classnames)):
-            with open(os.path.join(dstpath[:-12], "BboxAndScore_{:s}_{:d}.txt".format(id, i)), "w") as output:
+            with open(os.path.join(dstpath[:-12], "BboxAndScore_{}_{}.txt".format(id, i)), "w") as output:
                 for item in detections[i]:
                     output.write("%s\n" % str(item)[1:-1])
                 # output.write(str(detections))
