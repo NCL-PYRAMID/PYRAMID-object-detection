@@ -167,8 +167,11 @@ if __name__ == '__main__':
     for imgnames in os.walk(os.path.join(current_path, 'orthoimages_jpeg/'), topdown=False):
         for i, img in enumerate(list(imgnames[2])):
             img_id = os.path.join(current_path, 'orthoimages_jpeg/', img)
+            print("img_id_{}".format(img_id))
             dota_1_0_out_img_id = os.path.join(dota_1_0_res, img)
+            print("dota_1_0_out_img_id_{}".format(dota_1_0_out_img_id))
             dota_1_5_out_img_id = os.path.join(dota_1_5_res, img)
+            print("dota_1_5_out_img_id_{}".format(dota_1_5_out_img_id))
             roitransformer_dota_1_0.inference_single_vis(img_id, dota_1_0_out_img_id, (512, 512), (1024, 1024)) ### (800, 800), (1024, 1024)
             roitransformer_dota_1_5.inference_single_vis(img_id, dota_1_5_out_img_id, (512, 512), (1024, 1024)) ### (800, 800), (1024, 1024)
     print('Detection Finished!')
