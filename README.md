@@ -6,6 +6,10 @@ This repo is about how to use deep learning architectures to detect desired obje
 
 <img src="vis/dota 1.0/NZ2465.gif" width="50%"><img src="vis/dota 1.5/NZ2465.gif" width="50%">
 
+The models are also used to inference detection results of imagery around St James's Park in Newcastle, downloaded from Google Earth Pro with different time stamps.
+
+<img src="vis/Temp_DOTA_1_0.gif" width="50%"><img src="vis/Temp_DOTA_1_5.gif" width="50%">
+
 ### Project Team
 Dr Shidong Wang, Newcastle University  ([Shidong.wang@newcastle.ac.uk](mailto:Shidong.wang@newcastle.ac.uk))  
 Dr Elizabeth Lewis, Newcastle University  ([elizabeth.lewis2@newcastle.ac.uk](mailto:elizabeth.lewis2@newcastle.ac.uk))  
