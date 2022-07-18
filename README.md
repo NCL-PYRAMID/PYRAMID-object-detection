@@ -145,7 +145,9 @@ Deploying to a production style setup but on the local system. Examples of this 
 
 ### Production
 
-Deploying to the production system. Examples of this would include cloud, HPC or virtual machine. 
+This application is designed to be deployed to [DAFNI](https://dafni.ac.uk/). The HiPIMS repository (https://github.com/NCL-PYRAMID/PYRAMID-HiPIMS) can be used to create an Azure VM using the Terraform setup contained therein - see the HiPIMS repo README.md.
+
+Having built a Docker images on an Azure VM, this will still need to be uploaded to DAFNI. Ensure that you have saved and zipped the image in a `.tar.gz` file, and then either use an FTP client such as [FileZilla](https://filezilla-project.org/) to transfer this image to your local computer for upload to DAFNI; or, alternatively, use the [DAFNI CLI](https://github.com/dafnifacility/cli) to uplad the model directly from the VM. The DAFNI API can also be used raw to upload the model, although the CLI embeds the relevant API calls within a Python wrapper and is arguably easier to use.
 
 ## Usage
 
