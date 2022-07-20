@@ -158,7 +158,7 @@ if __name__ == '__main__':
     if platform=="docker":
         data_root_path = os.getenv("DATA_PATH", "/data")
     else:
-        data_root_path = os.getenv("DATA_PATH", "./")
+        data_root_path = os.getenv("DATA_PATH", "./data")
 
     # DAFNI compatible data paths
     data_input_path = os.path.join(data_root_path, 'inputs')
