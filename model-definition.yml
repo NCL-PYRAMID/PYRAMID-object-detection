@@ -1,0 +1,32 @@
+kind: model
+api_version: v1beta1
+metadata:
+  display_name: Floating Object Detection for PYRAMID
+  name: pyramid-object-detection
+  summary: Floating object detection model to supply HiPIMS
+  type: model
+  publisher: Newcastle University / Loughborough University
+  description: >
+    Machine recall model for floating object detection
+spec:
+  resources:
+    use_gpu: true
+  inputs:
+    parameters:
+      - name: simulation_name
+        title: Simulation Name
+        description: A name for the simulation
+        type: string
+        required: true
+        default: 'PYRAMID object detection'
+#    dataslots:
+#      - name: PYRAMID object-detection Test Data Set
+#        description: satellite imagery
+#        default:
+#          - 
+#        path: inputs
+#        required: true
+  outputs:
+    datasets:
+      - name: PYRAMID HiPIMS Test Data Set - Simulation Results
+        description: Set of files describing the flooding at time steps through the analysis
