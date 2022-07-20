@@ -19,14 +19,20 @@ spec:
         type: string
         required: true
         default: 'PYRAMID object detection'
-#    dataslots:
-#      - name: PYRAMID object-detection Test Data Set
-#        description: satellite imagery
-#        default:
-#          - 
-#        path: inputs
-#        required: true
+    dataslots:
+      - name: PYRAMID pre-trained object detection model
+        description: machine learning models
+        default:
+          - 51d2b9d5-bc72-4bdf-8a21-aa7757c9b10d
+        path: inputs
+        required: true
+      - name: PYRAMID orthoimages
+        description: satellite imagery
+        default:
+          - b64c7a70-ed6e-4802-8cd7-89d56d122e5f
+        path: inputs/orthoimages
+        required: true
   outputs:
     datasets:
-      - name: PYRAMID HiPIMS Test Data Set - Simulation Results
-        description: Set of files describing the flooding at time steps through the analysis
+      - name: PYRAMID object-detection results
+        description: Object detection geometry
