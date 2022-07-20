@@ -1,9 +1,19 @@
+###############################################################################
+# demo_large_image.py
+# Runs object detection for a large image, from pre-trained models
+# Shidong Wang, Robin Wardle
+# July 2022
+###############################################################################
+
+###############################################################################
+# Module imports
+###############################################################################
 from mmdet.apis import init_detector, inference_detector, show_result, draw_poly_detections
 import mmcv
 from mmcv import Config
 from mmdet.datasets import get_dataset
 import cv2
-import os
+import os, sys
 import numpy as np
 from tqdm import tqdm
 import DOTA_devkit.polyiou as polyiou
@@ -12,7 +22,14 @@ import pdb
 from PIL import Image
 Image.MAX_IMAGE_PIXELS = None
 
+###############################################################################
+# Add to module path
+###############################################################################
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
+###############################################################################
+# TODO: Function description needed
+###############################################################################
 def py_cpu_nms_poly_fast_np(dets, thresh):
     obbs = dets[:, 0:-1]
     x1 = np.min(obbs[:, 0::2], axis=1)
@@ -59,6 +76,9 @@ def py_cpu_nms_poly_fast_np(dets, thresh):
         order = order[inds + 1]
     return keep
 
+###############################################################################
+# TODO: Class description needed
+###############################################################################
 class DetectorModel():
     def __init__(self,
                  config_file,
@@ -72,6 +92,9 @@ class DetectorModel():
         self.classnames = self.dataset.CLASSES
         self.model = init_detector(config_file, checkpoint_file, device='cuda:0')
 
+    ###########################################################################
+    # TODO: Function description needed
+    ###########################################################################
     def inference_single(self, imagname, slide_size, chip_size):
         img = mmcv.imread(imagname)
         height, width, channel = img.shape
@@ -105,6 +128,9 @@ class DetectorModel():
             total_detections[i] = total_detections[i][keep]
         return total_detections
 
+    ###########################################################################
+    # TODO: Function description needed
+    ###########################################################################
     def inference_single_vis(self, srcpath, dstpath, slide_size, chip_size):
         detections = self.inference_single(srcpath, slide_size, chip_size)
         img = draw_poly_detections(srcpath, detections, self.classnames, scale=1, threshold=0.3)
@@ -121,21 +147,30 @@ class DetectorModel():
         cv2.imwrite(dstpath, img)
 
 
+###############################################################################
+# TODO: Function description needed
+###############################################################################
 if __name__ == '__main__':
     platform = os.getenv("PLATFORM")
 
+    # Sets a different data path depending on whether the application is
+    # running in a docker container or not. Mainly for use with DAFNI.
     if platform=="docker":
-        current_path = os.getenv("DATA_PATH", "/data")
+        data_root_path = os.getenv("DATA_PATH", "/data")
     else:
-        current_path = os.getenv("DATA_PATH", "./")
-#     current_path = os.getcwd()
-    orthoimage_path = os.path.join(current_path, 'orthoimages_tif/')
+        data_root_path = os.getenv("DATA_PATH", "./")
 
-    if os.path.exists(str(os.path.join(current_path, 'orthoimages_jpeg/'))):
-        output_orthoimage_path = os.path.join(current_path, 'orthoimages_jpeg/')
+    # DAFNI compatible data paths
+    data_input_path = os.path.join(data_root_path, 'inputs')
+    data_output_path = os.path.join(data_root_path, 'outputs')
+    orthoimage_path = os.path.join(data_input_path, 'orthoimages_tif/')
+
+    if os.path.exists(str(os.path.join(data_output_path, 'orthoimages_jpeg/'))):
+        output_orthoimage_path = os.path.join(data_output_path, 'orthoimages_jpeg/')
     else:
-        output_orthoimage_path = os.mkdir(os.path.join(current_path, 'orthoimages_jpeg/'))
+        output_orthoimage_path = os.mkdir(os.path.join(data_output_path, 'orthoimages_jpeg/'))
 
+    # Go through all the image files
     for root, dirs, files in os.walk(orthoimage_path, topdown=False):
         for name in files:
             print(os.path.join(root, name))
@@ -151,22 +186,25 @@ if __name__ == '__main__':
                     im.thumbnail(im.size)
                     im.save(outputfile, "JPEG", quality=100)
 
-    roitransformer_dota_1_0 = DetectorModel(r'configs/DOTA/faster_rcnn_RoITrans_r50_fpn_1x_dota.py', current_path+r'/dota10.pth')
-    roitransformer_dota_1_5 = DetectorModel(r'configs/DOTA1_5/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5.py', current_path+'/dota15.pth')
+    # Pre-trained model files
+    roitransformer_dota_1_0 = DetectorModel(r'configs/DOTA/faster_rcnn_RoITrans_r50_fpn_1x_dota.py', data_input_path+r'/dota10.pth')
+    roitransformer_dota_1_5 = DetectorModel(r'configs/DOTA1_5/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5.py', data_input_path+'/dota15.pth')
 
-    if os.path.exists(str(os.path.join(current_path, 'dota_1_0_res/'))):
-        dota_1_0_res = os.path.join(current_path, 'dota_1_0_res/')
+    # Create results output file paths
+    if os.path.exists(str(os.path.join(data_output_path, 'dota_1_0_res/'))):
+        dota_1_0_res = os.path.join(data_output_path, 'dota_1_0_res/')
     else:
-        dota_1_0_res = os.mkdir(os.path.join(current_path, 'dota_1_0_res/'))
+        dota_1_0_res = os.mkdir(os.path.join(data_output_path, 'dota_1_0_res/'))
 
-    if os.path.exists(str(os.path.join(current_path, 'dota_1_5_res/'))):
-        dota_1_5_res = os.path.join(current_path, 'dota_1_5_res/')
+    if os.path.exists(str(os.path.join(data_output_path, 'dota_1_5_res/'))):
+        dota_1_5_res = os.path.join(data_output_path, 'dota_1_5_res/')
     else:
-        dota_1_5_res = os.mkdir(os.path.join(current_path, 'dota_1_5_res/'))
+        dota_1_5_res = os.mkdir(os.path.join(data_output_path, 'dota_1_5_res/'))
 
-    for imgnames in os.walk(os.path.join(current_path, 'orthoimages_jpeg/'), topdown=False):
+    # Perform inference
+    for imgnames in os.walk(os.path.join(data_output_path, 'orthoimages_jpeg/'), topdown=False):
         for i, img in enumerate(list(imgnames[2])):
-            img_id = os.path.join(current_path, 'orthoimages_jpeg/', img)
+            img_id = os.path.join(data_output_path, 'orthoimages_jpeg/', img)
             print("img_id_{}".format(img_id))
             dota_1_0_out_img_id = os.path.join(dota_1_0_res, img)
             print("dota_1_0_out_img_id_{}".format(dota_1_0_out_img_id))
