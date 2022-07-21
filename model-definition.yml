@@ -30,7 +30,7 @@ spec:
         description: satellite imagery
         default:
           - b64c7a70-ed6e-4802-8cd7-89d56d122e5f
-        path: inputs/orthoimages
+        path: inputs/orthoimages_tif
         required: true
   outputs:
     datasets:
