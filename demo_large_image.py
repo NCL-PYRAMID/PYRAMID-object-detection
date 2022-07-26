@@ -165,12 +165,11 @@ if __name__ == '__main__':
     data_output_path = os.path.join(data_root_path, 'outputs')
     orthoimage_path = os.path.join(data_input_path, 'orthoimages_tif/')
 
-    if os.path.exists(str(os.path.join(data_output_path, 'orthoimages_jpeg/'))):
-        output_orthoimage_path = os.path.join(data_output_path, 'orthoimages_jpeg/')
-    else:
-        output_orthoimage_path = os.mkdir(os.path.join(data_output_path, 'orthoimages_jpeg/'))
+    # Create the outputs and orthoimages path if it doesn't exist
+    output_orthoimage_path = os.path.join(data_output_path, 'orthoimages_jpeg/')
+    os.makedirs(output_orthoimage_path, exist_ok=True)
 
-    # Go through all the image files
+    # Convert the input image files from .tif to .jpg
     for root, dirs, files in os.walk(orthoimage_path, topdown=False):
         for name in files:
             print(os.path.join(root, name))
@@ -191,20 +190,15 @@ if __name__ == '__main__':
     roitransformer_dota_1_5 = DetectorModel(r'configs/DOTA1_5/faster_rcnn_RoITrans_r50_fpn_1x_dota1_5.py', data_input_path+'/dota15.pth')
 
     # Create results output file paths
-    if os.path.exists(str(os.path.join(data_output_path, 'dota_1_0_res/'))):
-        dota_1_0_res = os.path.join(data_output_path, 'dota_1_0_res/')
-    else:
-        dota_1_0_res = os.mkdir(os.path.join(data_output_path, 'dota_1_0_res/'))
-
-    if os.path.exists(str(os.path.join(data_output_path, 'dota_1_5_res/'))):
-        dota_1_5_res = os.path.join(data_output_path, 'dota_1_5_res/')
-    else:
-        dota_1_5_res = os.mkdir(os.path.join(data_output_path, 'dota_1_5_res/'))
+    dota_1_0_res = os.path.join(data_output_path, 'dota_1_0_res/')
+    dota_1_5_res = os.path.join(data_output_path, 'dota_1_5_res/')
+    os.makedirs(dota_1_0_res, exist_ok=True)
+    os.makedirs(dota_1_5_res, exist_ok=True)
 
     # Perform inference
-    for imgnames in os.walk(os.path.join(data_output_path, 'orthoimages_jpeg/'), topdown=False):
+    for imgnames in os.walk(output_orthoimage_path, topdown=False):
         for i, img in enumerate(list(imgnames[2])):
-            img_id = os.path.join(data_output_path, 'orthoimages_jpeg/', img)
+            img_id = os.path.join(output_orthoimage_path, img)
             print("img_id_{}".format(img_id))
             dota_1_0_out_img_id = os.path.join(dota_1_0_res, img)
             print("dota_1_0_out_img_id_{}".format(dota_1_0_out_img_id))
