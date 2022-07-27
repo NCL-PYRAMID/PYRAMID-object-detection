@@ -8,12 +8,14 @@
 ###############################################################################
 # Module imports
 ###############################################################################
+import os, sys
+from datetime import datetime
+
 from mmdet.apis import init_detector, inference_detector, show_result, draw_poly_detections
 import mmcv
 from mmcv import Config
 from mmdet.datasets import get_dataset
 import cv2
-import os, sys
 import numpy as np
 from tqdm import tqdm
 import DOTA_devkit.polyiou as polyiou
@@ -26,6 +28,69 @@ Image.MAX_IMAGE_PIXELS = None
 # Add to module path
 ###############################################################################
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+###############################################################################
+# Metadata for DAFNI output. Originally taken from the CITYCAT project:
+#  https://github.com/OpenCLIM/citycat-dafni
+###############################################################################
+_app_title = "pyramid-floating-object-detection"
+_app_description = "Default dataslot test output"
+_metadata = f"""{{
+  "@context": ["metadata-v1"],
+  "@type": "dcat:Dataset",
+  "dct:title": "{_app_title}",
+  "dct:description": "{_app_description}",
+  "dct:identifier":[],
+  "dct:subject": "Environment",
+  "dcat:theme":[],
+  "dct:language": "en",
+  "dcat:keyword": ["PYRAMID"],
+  "dct:conformsTo": {{
+    "@id": null,
+    "@type": "dct:Standard",
+    "label": null
+  }},
+  "dct:spatial": {{
+    "@id": null,
+    "@type": "dct:Location",
+    "rdfs:label": null
+  }},
+  "geojson": {{}},
+  "dct:PeriodOfTime": {{
+    "type": "dct:PeriodOfTime",
+    "time:hasBeginning": null,
+    "time:hasEnd": null
+  }},
+  "dct:accrualPeriodicity": null,
+  "dct:creator": [
+    {{
+      "@type": "foaf:Organization",
+      "@id": "http://www.ncl.ac.uk/",
+      "foaf:name": "Newcastle University",
+      "internalID": null
+    }}
+  ],
+  "dct:created": "{datetime.now().isoformat()}Z",
+  "dct:publisher":{{
+    "@id": null,
+    "@type": "foaf:Organization",
+    "foaf:name": null,
+    "internalID": null
+  }},
+  "dcat:contactPoint": {{
+    "@type": "vcard:Organization",
+    "vcard:fn": "DAFNI",
+    "vcard:hasEmail": "support@dafni.ac.uk"
+  }},
+  "dct:license": {{
+    "@type": "LicenseDocument",
+    "@id": "https://creativecommons.org/licences/by/4.0/",
+    "rdfs:label": null
+  }},
+  "dct:rights": null,
+  "dafni_version_note": "created"
+}}
+"""
 
 ###############################################################################
 # TODO: Function description needed
@@ -208,4 +273,8 @@ if __name__ == '__main__':
             roitransformer_dota_1_5.inference_single_vis(img_id, dota_1_5_out_img_id, (512, 512), (1024, 1024)) ### (800, 800), (1024, 1024)
     print('Detection Finished!')
 
+    # Write DAFNI metadata file for output datasets
+    with open(os.path.join(data_output_path, "metadata.json"), "w") as f:
+        f.write(_metadata)
+    print("DAFNI output metadata written!")
 
