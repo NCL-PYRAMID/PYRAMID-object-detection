@@ -199,7 +199,7 @@ class DetectorModel():
     def inference_single_vis(self, srcpath, dstpath, slide_size, chip_size):
         detections = self.inference_single(srcpath, slide_size, chip_size)
         img = draw_poly_detections(srcpath, detections, self.classnames, scale=1, threshold=0.3)
-        id = srcpath[-10:-4]
+        id = srcpath[-11:-5]
         for i in range(len(self.classnames)):
             dst_dir = dstpath[:-12]
             os.makedirs(dst_dir, exist_ok=True)
