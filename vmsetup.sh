@@ -6,7 +6,7 @@
 ###############################################################################
 
 # Assume that the VM uses Azure Extension for installing NVidia CUDA Toolkit
-# Wait until the toolkithas finished installing
+# Wait until the toolkit has finished installing
 if [ 1 ]
 then
 while [ $(ps aux | grep -i apt | wc -l) -gt 1 ]
