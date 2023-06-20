@@ -153,11 +153,11 @@ See this [supplementary set of instructions](doc/installing_on_a_vm.md) for info
 ### Local (including on a Virtual Machine)
 Build the Docker container for the FOD application using a standard `docker build` command.
 ```
-docker build . -t pyramid-fod
+sudo docker build . -t pyramid-fod
 ```
 The container is designed to mount a local directory for reading and writing. For testing locally, download the test data from DAFNI, as outlined in `data/inputs/README.md`. Then the test application can be run using
 ```
-docker run -v "$(pwd)/data:/data" pyramid-fod
+sudo docker run -it --gpus all -v "$(pwd)/data:/data" pyramid-fod
 ```
 Data produced by the application will be in data/outputs. Note that because of the way that Docker permissions work, these data will have `root/root` ownership permissions. You will need to use elevated `sudo` privileges to delete the outputs folder.
 
@@ -171,7 +171,7 @@ The deployed model can be run in a DAFNI workflow. See the [DAFNI workflow docum
 
 When running the model on DAFNI as part of a larger workflow, all data supplied to the model will appear in the folder `/data/inputs`, exactly as produced by the deep learning model. The outputs of this converter must be written to the `/data/outputs` folder within the Docker container. When testing locally, these paths are instead `./data/inputs` and `./data/outputs` respectively. The Python script is able to determine which directory to use by checking the environment variable `PLATFORM`, which is set in the Dockerfile.
 
-Model outputs in `/data/outputs` should contain the actual data produced by the converter, as well as a `metadata.json` file which is used by DAFNI in publishing steps when creating a new dataset from the data produced by the model.
+Model outputs in `/data/outputs` should contain the actual data produced by the model, as well as a `metadata.json` file which is used by DAFNI in publishing steps when creating a new dataset from the data produced by the model.
 
 ## Roadmap
 
